@@ -3,7 +3,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        white: '#ffffff', // Asegurar que `text-white` funcione
+        white: '#ffffff',
         black: '#000000',
       },
     },

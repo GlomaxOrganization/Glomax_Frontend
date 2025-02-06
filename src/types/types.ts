@@ -9,6 +9,17 @@ export type Season = {
     description: string;
 }
 
+export type Size = {
+    id: number;
+    description: string;
+}
+
+export type Color = {
+    id: number;
+    description: string;
+    code: string;
+}
+
 export type Image = {
     id: number;
     source: string;
@@ -18,6 +29,8 @@ export type Category = {
     id: number;
     name: string;
     images: Image[];
+    sizes: Size[];
+    colors: Color[];
     price: number;
     season: Season;
     type: Type;

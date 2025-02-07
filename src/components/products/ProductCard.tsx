@@ -1,5 +1,5 @@
-import { Category } from "../types/types.ts";
-import { ImageCarousel } from "./Utilities/ImageCarousel.tsx";
+import { Category } from "../../types/types.ts";
+import { ImageCarousel } from "../Utilities/ImageCarousel.tsx";
 
 export const ProductCard = (props: { category: Category }) => {
     const { category } = props;

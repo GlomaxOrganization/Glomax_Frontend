@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
+main{
     background: rgb(255,255,255);
     background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgb(255, 222, 175) 50%, rgb(255, 222, 175) 100%);
 }

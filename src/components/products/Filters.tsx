@@ -19,7 +19,8 @@ export const Filters = (props: { setCategories: (categories: Category[]) => void
     const [sizesSelected, setSizesSelected] = useState<number[]>([]);
     const [colorsSelected, setColorsSelected] = useState<number[]>([]);
     const [error, setError] = useState<string | null>(null);
-
+    const [name, setName ] = useState<string>("");
+    
     const handleSelectionChange = (
         id: number,
         isChecked: boolean,
@@ -61,10 +62,15 @@ export const Filters = (props: { setCategories: (categories: Category[]) => void
 
     const filterCategories = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (typesSelected.length < 1 && sizesSelected.length < 1 && colorsSelected.length < 1) {
+
+        if (typesSelected.length < 1 && sizesSelected.length < 1 && colorsSelected.length < 1 && name.length < 1) {
             setError("No ha seleccionado ningún filtro!");
+            if(name.length < 1) {
+                window.location.reload();
+            }
             return;
         }
+
         try {
             const response = await fetch(`http://localhost:8080/categoriesFiltered`, {
                 method: 'POST',
@@ -75,6 +81,7 @@ export const Filters = (props: { setCategories: (categories: Category[]) => void
                     types: typesSelected,
                     sizes: sizesSelected,
                     colors: colorsSelected,
+                    name: name
                 }),
                 credentials: 'include',
             });
@@ -92,12 +99,33 @@ export const Filters = (props: { setCategories: (categories: Category[]) => void
     return (
         <>
             {!isOpen ? (
-                <button
-                    className="btn btn-primary bg-[#5C4033] hover:bg-[#7D4E30] text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200"
-                    onClick={() => setIsOpen(true)}
-                >
-                    Más filtros
-                </button>
+                <div className="flex justify-between items-end pb-8">
+                    <form onSubmit={filterCategories} className={'flex items-end gap-6'}>
+                        <div>
+                            <label htmlFor="name" className="block mb-2 text-xl font-semibold text-black">Buscar</label>
+                            <input type="text" id={'name'} placeholder="Buscar..."  value={name}
+                                   onInput={(e)=>
+                                       setName(
+                                       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                       //@ts-expect-error
+                                       e.target.value)
+                            }
+                                   className="input input-bordered w-full max-w-xs bg-[#5C4033] text-white"/>
+                            {error && <p className={'block text-black text-center'}>{error}</p>}
+                        </div>
+                        <button
+                            className="btn bg-[#5C4033] hover:bg-[#7D4E30] text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200"
+                        >
+                            Buscar
+                        </button>
+                    </form>
+                    <button
+                        className="btn bg-[#5C4033] hover:bg-[#7D4E30] text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200"
+                        onClick={() => setIsOpen(true)}
+                    >
+                        Más filtros
+                    </button>
+                </div>
             ) : (
                 <div
                     className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-[80] transition-opacity duration-300 ${

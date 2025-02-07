@@ -36,6 +36,14 @@ export type Category = {
     type: Type;
 }
 
+export type Product = {
+    id: number;
+    stock: number;
+    category : Category;
+    size : Size;
+    color : Color;
+}
+
 export type User = {
     id: number;
     username: string;

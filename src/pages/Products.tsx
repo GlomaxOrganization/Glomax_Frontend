@@ -24,15 +24,8 @@ export const Products = () => {
                     Explora nuestra colección de productos cuidadosamente seleccionados. Desde los colores más vibrantes
                     hasta los estilos más elegantes, encuentra lo que mejor se adapta a ti.
                 </p>
-                <div className="flex justify-between items-center pb-8">
-                    <div>
-                        <label htmlFor="name" className="block mb-2 text-xl font-semibold text-black">Buscar</label>
-                        <input type="text" id={'name'} placeholder="Buscar..."
-                               className="input input-bordered w-full max-w-xs bg-[#5C4033] text-white"/>
-                    </div>
-                    <Filters setCategories={setCategories}/>
-                </div>
 
+                <Filters setCategories={setCategories}/>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {categories.length > 0 ? (
                         categories.map((category) => (

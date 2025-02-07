@@ -6,7 +6,7 @@ export const ProductCard = (props: { category: Category }) => {
 
     return (
         <div className="relative mx-auto w-full max-w-sm overflow-hidden rounded-xl border border-gray-300 bg-white shadow-lg transition hover:shadow-xl dark:border-gray-700 dark:bg-[#5C4033]">
-            <a href="#">
+            <a href={`/productDetail/${category.id}`}>
                 <ImageCarousel images={category.images} />
             </a>
 

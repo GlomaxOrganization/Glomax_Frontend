@@ -1,4 +1,7 @@
 export const Header = () => {
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]") as unknown[];
+    const amount = cart.length;
+
     return (
         <header className="navbar bg-[#5C4033] shadow-md px-6 py-3">
             <div className="flex-1">
@@ -23,14 +26,14 @@ export const Header = () => {
                                     strokeWidth="2"
                                     d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
                             </svg>
-                            <span className="badge badge-sm indicator-item bg-red-500 text-white">8</span>
+                            <span className="badge badge-sm indicator-item bg-red-500 text-white">{amount}</span>
                         </div>
                     </div>
                     <div
                         tabIndex={0}
                         className="dropdown-content card card-compact w-64 bg-white dark:bg-gray-800 shadow-lg rounded-lg mt-3">
                         <div className="card-body">
-                            <span className="text-lg font-bold text-gray-800 dark:text-white">8 Items</span>
+                            <span className="text-lg font-bold text-gray-800 dark:text-white">{amount} Items</span>
                             <span className="text-gray-600 dark:text-gray-300">Subtotal: <strong>$999</strong></span>
                             <div className="card-actions mt-2">
                                 <button className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold px-4 py-2 rounded-lg transition">

@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useFetchTypes } from "../../functions/useFetchTypes.tsx";
 import { useFetchSizes } from "../../functions/useFetchSizes.tsx";
 import { useFetchColors } from "../../functions/useFetchColors.tsx";
 import * as React from "react";
 import { Category } from "../../types/types.ts";
+import {useModal} from "../Utilities/useModal.tsx";
 
 export const Filters = (props: { setCategories: (categories: Category[]) => void }) => {
     const applyFilters = (filteredCategories: Category[]) => {
@@ -13,8 +14,7 @@ export const Filters = (props: { setCategories: (categories: Category[]) => void
     const types = useFetchTypes();
     const colors = useFetchColors();
     const sizes = useFetchSizes();
-    const [isOpen, setIsOpen] = useState(false);
-    const [isVisible, setIsVisible] = useState(false);
+    const { isOpen, isVisible, setIsOpen, closeWithAnimation } = useModal();
     const [typesSelected, setTypesSelected] = useState<number[]>([]);
     const [sizesSelected, setSizesSelected] = useState<number[]>([]);
     const [colorsSelected, setColorsSelected] = useState<number[]>([]);
@@ -28,37 +28,6 @@ export const Filters = (props: { setCategories: (categories: Category[]) => void
     ) => {
         setState((prev) => (isChecked ? [...prev, id] : prev.filter((item) => item !== id)));
     };
-
-    const closeWithAnimation = () => {
-        setIsVisible(false);
-        setTimeout(() => setIsOpen(false), 300);
-    };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const handleKeyDown = (
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-expect-error
-        event
-    ) => {
-        if (event.key === "Escape") {
-            closeWithAnimation();
-        }
-    };
-
-    useEffect(() => {
-        if (isOpen) {
-            setIsVisible(true);
-            window.addEventListener("keydown", handleKeyDown);
-            document.body.classList.add("overflow-hidden");
-        } else {
-            window.removeEventListener("keydown", handleKeyDown);
-            document.body.classList.remove("overflow-hidden");
-        }
-        return () => {
-            window.removeEventListener("keydown", handleKeyDown);
-            document.body.classList.remove("overflow-hidden");
-        };
-    }, [handleKeyDown, isOpen]);
 
     const filterCategories = async (e: React.FormEvent) => {
         e.preventDefault();

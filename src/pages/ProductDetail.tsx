@@ -28,6 +28,38 @@ export const ProductDetail = () => {
         setIsAvailable(product == null);
     }, [product]);
 
+    const addToCart = () => {
+        if (!product) {
+            setError("No se puede agregar un producto inexistente.");
+            return;
+        }
+
+        const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+        const existingProductIndex = cart.findIndex(
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            (//@ts-expect-error
+                item) => item.id === product.id && item.size === sizeSelected && item.color === colorSelected
+        );
+
+        if (existingProductIndex !== -1) {
+            cart[existingProductIndex].amount += amountSelected;
+        } else {
+            const newProduct = {
+                id: product.id,
+                category: product.category,
+                size: sizeSelected,
+                color: colorSelected,
+                amount: amountSelected
+            };
+            cart.push(newProduct);
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+        setError("Producto agregado correctamente!");
+    };
+
+
     return (
         <div className="min-h-[93vh]">
             <Header />
@@ -37,10 +69,17 @@ export const ProductDetail = () => {
                         <ImageGallery images={category.images} />
                     </div>
                     <div className={'flex flex-col gap-8'}>
+                        <h1 className={'text-black text-xl font-semibold'}>
+                            <a href={"/products"}>Productos</a> {'> '+ category.name}
+                        </h1>
                         <h1 className={'text-black text-4xl font-bold'}>{category.name}</h1>
-                        <h2 className={'text-black text-4xl font-bold'}>${category.price}</h2>
-                        <form className="grid gap-6">
-                            <div className={'grid grid-rows-2 gap-10'}>
+                        <div className={'grid grid-cols-1 gap-2'}>
+                            <h2 className={'text-black text-4xl font-bold'}>${category.price}</h2>
+                            <h2 className={'text-black text-2xl font-semibold'}>¡${category.price - category.price * 20 / 100} con
+                                transferencia!</h2>
+                        </div>
+                        <div className="grid gap-6">
+                            <div className={'grid grid-cols-2'}>
                                 <div>
                                     <label className="block mb-2 text-lg font-medium text-black">Talles</label>
                                     <select className="select select-bordered bg-[#5C4033] w-full max-w-xs text-white"
@@ -56,7 +95,7 @@ export const ProductDetail = () => {
 
                                 <div>
                                     <label className="block mb-2 text-lg font-medium text-black">Colores</label>
-                                    <select className="select select-bordered bg-[#5C4033] w-full max-w-xs text-white" 
+                                    <select className="select select-bordered bg-[#5C4033] w-full max-w-xs text-white"
                                             onChange={(e)=> setColorSelected(
                                                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                                                 //@ts-expect-error
@@ -79,16 +118,16 @@ export const ProductDetail = () => {
                                 </div>
 
                                 <div className="grid gap-4">
-                                    <button
-                                        type="submit" disabled={isAvailable}
+                                    <button disabled={isAvailable}
                                         className={`w-[50%] text-white ${isAvailable ? 'bg-[#6E6059FF]' : 'bg-[#5C4033]' }  font-semibold py-3 rounded-lg transition-all duration-200`}
+                                        onClick={addToCart}
                                     >
                                         {isAvailable ? 'Sin stock' : 'Agregar al carrito'}
                                     </button>
-                                    {error && <p className={'text-black text-center'}>{error}</p>}
                                 </div>
+                                {error && <p className={'text-black text-end block font-semibold pt-5'}>{error}</p>}
                             </div>
-                        </form>
+                        </div>
 
                     </div>
                 </div>

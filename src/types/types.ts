@@ -22,6 +22,7 @@ export type Color = {
 
 export type Image = {
     id: number;
+    color: Color;
     source: string;
 }
 
@@ -49,4 +50,12 @@ export type User = {
     username: string;
     email: string;
     profilePhoto: string;
+}
+
+export type ItemCart = {
+    id: number;
+    category: Category;
+    size: Size;
+    color : Color;
+    amount : number;
 }

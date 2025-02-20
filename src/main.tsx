@@ -5,6 +5,7 @@ import {Home} from "./pages/Home.tsx";
 import {Products} from "./pages/Products.tsx";
 import {Suspense} from "react";
 import {ProductDetail} from "./pages/ProductDetail.tsx";
+import {Cart} from "./pages/Cart.tsx";
 
 const root = createRoot(document.getElementsByTagName('main')[0]);
 
@@ -15,6 +16,7 @@ root.render(
                 <Route path={'/'} element={<Home />} />
                 <Route path={'/products'} element={<Products />} />
                 <Route path={'/productDetail/:id'} element={<ProductDetail />} />
+                <Route path={'/cart'} element={<Cart />} />
             </Routes>
         </Suspense>
     </BrowserRouter>,

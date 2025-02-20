@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {Product} from "../types/types";
 
-export const useFetchProduct = (categoryId: string | undefined, sizeId: number, colorId: number) => {
+export const useFetchProduct = (categoryId: number | undefined, sizeId: number, colorId: number) => {
     const [product, setProduct] = useState<Product | null>(null);
 
     const fetchProduct = async () => {

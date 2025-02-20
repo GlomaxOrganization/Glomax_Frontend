@@ -27,9 +27,10 @@ export const Hero = () =>{
                                 transition={{duration: 1, delay: 0.6}}
                             >
                                 Exprésate con cada outfit. Ropa única para personas auténticas. ¡Compra ahora y marca la
-                                diferencia! Web
+                                diferencia!
                             </motion.p>
-                            <motion.button
+                            <motion.a
+                                href={'/products'}
                                 className="bg-[#a86b00] hover:bg-[#a86b00] text-white font-semibold px-4 py-2 rounded-lg"
                                 initial={{opacity: 0, x: -50}}
                                 whileInView={{opacity: 1, x: 0}}
@@ -38,7 +39,7 @@ export const Hero = () =>{
                                 whileTap={{scale: 0.9}}
                             >
                                 Comprar
-                            </motion.button>
+                            </motion.a>
                         </div>
 
                     </motion.div>

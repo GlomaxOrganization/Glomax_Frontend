@@ -14,7 +14,7 @@ export const ImageCarousel = (props: { images: Image[] }) => {
     }, [images.length]);
 
     return (
-        <div className="carousel h-96 w-full relative">
+        <div className="h-96 w-full relative">
             {images.map((image, index) => (
                 <div
                     key={index}

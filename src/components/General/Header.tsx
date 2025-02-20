@@ -5,18 +5,20 @@ export const Header = () => {
     return (
         <header className="navbar bg-[#5C4033] shadow-md px-6 py-3">
             <div className="flex-1">
-                <a className="text-2xl font-bold text-gray-900 dark:text-white hover:text-gray-600 transition">
-                    Glomax
-                </a>
+                <h1>
+                    <a href={"/"}
+                       className="text-2xl font-bold text-white  transition">
+                        Glomax
+                    </a>
+                </h1>
             </div>
             <div className="flex-none flex gap-4">
-                {/* Carrito de compras */}
-                <div className="dropdown dropdown-end">
-                    <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+                <a href="/cart">
+                    <div className="btn btn-ghost btn-circle">
                         <div className="indicator">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                className="h-6 w-6 text-gray-700 dark:text-white"
+                                className="h-6 w-6 text-gray-700 text-white"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor">
@@ -29,25 +31,11 @@ export const Header = () => {
                             <span className="badge badge-sm indicator-item bg-red-500 text-white">{amount}</span>
                         </div>
                     </div>
-                    <div
-                        tabIndex={0}
-                        className="dropdown-content card card-compact w-64 bg-white dark:bg-gray-800 shadow-lg rounded-lg mt-3">
-                        <div className="card-body">
-                            <span className="text-lg font-bold text-gray-800 dark:text-white">{amount} Items</span>
-                            <span className="text-gray-600 dark:text-gray-300">Subtotal: <strong>$999</strong></span>
-                            <div className="card-actions mt-2">
-                                <button className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold px-4 py-2 rounded-lg transition">
-                                    Ver carrito
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </a>
 
-                {/* Perfil de usuario */}
                 <div className="dropdown dropdown-end">
                     <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                        <div className="w-10 rounded-full border border-gray-300 dark:border-gray-600">
+                        <div className="w-10 rounded-full border border-gray-300 border-gray-600">
                             <img
                                 alt="User profile"
                                 src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"/>
@@ -55,20 +43,20 @@ export const Header = () => {
                     </div>
                     <ul
                         tabIndex={0}
-                        className="dropdown-content menu menu-sm w-52 bg-white dark:bg-gray-800 rounded-lg shadow-lg mt-3 p-2">
+                        className="dropdown-content menu menu-sm w-52 bg-white bg-gray-800 rounded-lg shadow-lg mt-3 p-2">
                         <li>
-                            <a className="flex justify-between text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg px-4 py-2">
+                            <a className="flex justify-between text-gray-700 text-white hover:bg-gray-100 hover:bg-gray-700 rounded-lg px-4 py-2">
                                 Perfil
                                 <span className="badge bg-blue-500 text-white">Nuevo</span>
                             </a>
                         </li>
                         <li>
-                            <a className="text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg px-4 py-2">
+                            <a className="text-gray-700 text-white hover:bg-gray-100 hover:bg-gray-700 rounded-lg px-4 py-2">
                                 Configuración
                             </a>
                         </li>
                         <li>
-                            <a className="text-red-500 hover:bg-red-100 dark:hover:bg-red-700 rounded-lg px-4 py-2">
+                            <a className="text-red-500 hover:bg-red-100 hover:bg-red-700 rounded-lg px-4 py-2">
                                 Cerrar sesión
                             </a>
                         </li>

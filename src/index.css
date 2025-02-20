@@ -6,3 +6,12 @@ main{
     background: rgb(255,255,255);
     background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgb(255, 222, 175) 50%, rgb(255, 222, 175) 100%);
 }
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #5C4033 transparent;
+}
+*:hover {
+    scrollbar-width: thin;
+    scrollbar-color: #5C4033 transparent;
+}

@@ -5,6 +5,7 @@ import { useFetchColors } from "../../functions/useFetchColors.tsx";
 import * as React from "react";
 import { Category } from "../../types/types.ts";
 import {useModal} from "../Utilities/useModal.tsx";
+import {useFetchSeasons} from "../../functions/useFetchSeasons.tsx";
 
 export const Filters = (props: { setCategories: (categories: Category[]) => void }) => {
     const applyFilters = (filteredCategories: Category[]) => {
@@ -14,8 +15,10 @@ export const Filters = (props: { setCategories: (categories: Category[]) => void
     const types = useFetchTypes();
     const colors = useFetchColors();
     const sizes = useFetchSizes();
+    const seasons = useFetchSeasons();
     const { isOpen, isVisible, setIsOpen, closeWithAnimation } = useModal();
     const [typesSelected, setTypesSelected] = useState<number[]>([]);
+    const [seasonsSelected, setSeasonsSelected] = useState<number[]>([]);
     const [sizesSelected, setSizesSelected] = useState<number[]>([]);
     const [colorsSelected, setColorsSelected] = useState<number[]>([]);
     const [error, setError] = useState<string | null>(null);
@@ -32,7 +35,7 @@ export const Filters = (props: { setCategories: (categories: Category[]) => void
     const filterCategories = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (typesSelected.length < 1 && sizesSelected.length < 1 && colorsSelected.length < 1 && name.length < 1) {
+        if (typesSelected.length < 1 && sizesSelected.length < 1 && colorsSelected.length < 1 && name.length < 1 && seasonsSelected.length < 1) {
             setError("No ha seleccionado ningún filtro!");
             if(name.length < 1) {
                 window.location.reload();
@@ -48,6 +51,7 @@ export const Filters = (props: { setCategories: (categories: Category[]) => void
                 },
                 body: JSON.stringify({
                     types: typesSelected,
+                    seasons: seasonsSelected,
                     sizes: sizesSelected,
                     colors: colorsSelected,
                     name: name
@@ -67,35 +71,35 @@ export const Filters = (props: { setCategories: (categories: Category[]) => void
 
     return (
         <>
-            {!isOpen ? (
-                <div className="flex justify-between items-end pb-8">
-                    <form onSubmit={filterCategories} className={'flex items-end gap-6'}>
-                        <div>
-                            <label htmlFor="name" className="block mb-2 text-xl font-semibold text-black">Buscar</label>
-                            <input type="text" id={'name'} placeholder="Buscar..."  value={name}
-                                   onInput={(e)=>
-                                       setName(
+
+            <div className="flex justify-between items-end pb-8">
+                <form onSubmit={filterCategories} className={'flex items-end gap-6'}>
+                    <div>
+                        <label htmlFor="name" className="block mb-2 text-xl font-semibold text-black">Buscar</label>
+                        <input type="text" id={'name'} placeholder="Buscar..." value={name}
+                               onInput={(e) =>
+                                   setName(
                                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                                        //@ts-expect-error
                                        e.target.value)
-                            }
-                                   className="input input-bordered w-full max-w-xs bg-[#5C4033] text-white"/>
-                            {error && <p className={'block text-black text-center'}>{error}</p>}
-                        </div>
-                        <button
-                            className="btn bg-[#5C4033] hover:bg-[#7D4E30] text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200"
-                        >
-                            Buscar
-                        </button>
-                    </form>
+                               }
+                               className="input input-bordered w-full max-w-xs bg-[#5C4033] text-white"/>
+                        {error && <p className={'block text-black text-center'}>{error}</p>}
+                    </div>
                     <button
                         className="btn bg-[#5C4033] hover:bg-[#7D4E30] text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200"
-                        onClick={() => setIsOpen(true)}
                     >
-                        Más filtros
+                        Buscar
                     </button>
-                </div>
-            ) : (
+                </form>
+                <button
+                    className="btn bg-[#5C4033] hover:bg-[#7D4E30] text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200"
+                    onClick={() => setIsOpen(true)}
+                >
+                    Más filtros
+                </button>
+            </div>
+            {isOpen && (
                 <div
                     className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-[80] transition-opacity duration-300 ${
                         isVisible ? "opacity-100" : "opacity-0"
@@ -118,6 +122,22 @@ export const Filters = (props: { setCategories: (categories: Category[]) => void
                         <h2 className="text-white text-2xl font-semibold text-center mb-4">Filtros</h2>
 
                         <form className="grid gap-10" onSubmit={filterCategories}>
+                            <div>
+                                <label className="block mb-2 text-lg font-medium text-white">Temporada</label>
+                                <div className="grid grid-cols-4">
+                                    {seasons.map((s) => (
+                                        <label key={s.id} className="flex items-center gap-2">
+                                            <input
+                                                type="checkbox"
+                                                className="checkbox border-white bg-[#5C4033]"
+                                                checked={seasonsSelected.includes(s.id)}
+                                                onChange={(e) => handleSelectionChange(s.id, e.target.checked, setSeasonsSelected)}
+                                            />
+                                            <span className="text-white">{s.description}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
                             <div>
                                 <label className="block mb-2 text-lg font-medium text-white">Tipo</label>
                                 <div className="grid grid-cols-4">

@@ -39,12 +39,12 @@ export const ProductCard = (props: { category: Category }) => {
                 </div>
 
                 <div className="mt-5 flex items-center justify-between">
-                    <span className="text-lg font-bold text-gray-900 text-white">
+                    <span className="text-lg font-bold text-white">
                         ${category.price.toFixed(2)}
                     </span>
-                    <a href="#"
-                       className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 bg-blue-500 hover:bg-blue-600 focus:ring-blue-800">
-                        Add to cart
+                    <a href={"/productDetail/"+category.id}
+                       className="rounded-lg px-4 py-2 text-sm font-medium text-white transition focus:ring-4 focus:ring-blue-300 bg-blue-500 hover:bg-blue-600">
+                        Ver más
                     </a>
                 </div>
             </div>

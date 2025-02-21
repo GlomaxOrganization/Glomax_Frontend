@@ -1,4 +1,3 @@
-
 import { Category } from "../../types/types.ts";
 import { ImageCarousel } from "../Utilities/ImageCarousel.tsx";
 
@@ -12,9 +11,9 @@ export const ProductCard = (props: { category: Category }) => {
             </a>
 
             <div className="p-5">
-                <a href="#">
+                <a href={'/productDetail/'+category.id}>
                     <h5 className="text-xl font-semibold tracking-tight text-white">
-                        <a href={'/productDetail/'+category.id}>{category.name}</a>
+                        {category.name}
                     </h5>
                 </a>
 

@@ -1,8 +1,16 @@
 import { Header } from "../components/General/Header.tsx";
 import { ItemCart } from "../types/types.ts";
 import { useState, useEffect } from "react";
+import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
+import axios from "axios";
 
 export const Cart = () => {
+
+    initMercadoPago(`${import.meta.env.VITE_MERCADO_PAGO_TOKEN}`, {
+        locale: "es-AR",
+    });
+
+
     const [cart, setCart] = useState<ItemCart[]>([]);
 
     useEffect(() => {
@@ -33,6 +41,36 @@ export const Cart = () => {
     };
 
     const totalPrice = cart.reduce((total, item) => total + item.amount * item.category.price, 0);
+
+    const [preferenceId, setPreferenceId] = useState(null);
+
+    const createPreference = async () => {
+        const url = 'http://localhost:8080/create-preference';
+        try {
+            const response = await axios.post(url, {
+                title: 'Glomax',
+                quantity: cart.length,
+                price: totalPrice
+            }, {
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            console.error("Error al crear la preferencia:", error);
+        }
+    };
+
+    const handleBuy = async () => {
+        const id = await createPreference();
+
+        if (id) {
+            setPreferenceId(id);
+        }
+    };
 
     return (
         <div className={'min-h-[100vh]'}>
@@ -116,10 +154,17 @@ export const Cart = () => {
                                 <p className="text-lg font-bold">${totalPrice.toFixed(2)}</p>
                             </div>
                             <button
+                                onClick={handleBuy}
                                 className="mt-4 w-full bg-[#FFDEAFFF] hover:bg-[#C8994AFF] text-black font-semibold px-4 py-2 rounded-lg transition duration-300"
                             >
                                 Finalizar Compra
                             </button>
+
+                            {preferenceId &&
+                                <Wallet initialization={{preferenceId: preferenceId}}
+                                        customization={{texts: {valueProp: 'smart_option'}}}/>
+                            }
+
                         </div>
                     </div>
                 ) : (

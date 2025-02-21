@@ -10,7 +10,6 @@ export const Cart = () => {
         locale: "es-AR",
     });
 
-
     const [cart, setCart] = useState<ItemCart[]>([]);
 
     useEffect(() => {

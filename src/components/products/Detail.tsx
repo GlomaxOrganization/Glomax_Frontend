@@ -2,14 +2,16 @@ import {ImageGallery} from "../Utilities/ImageGallery.tsx";
 import {Category, ItemCart} from "../../types/types.ts";
 import {useEffect, useState} from "react";
 import {useFetchProduct} from "../../functions/useFetchProduct.tsx";
+import {Notification} from "../Notification.tsx";
 
 export const Detail = (props : {category : Category | null}) => {
     const {category} = props;
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<string >("");
     const [amountSelected, setAmountSelected] = useState<number>(1);
     const [sizeSelected, setSizeSelected] = useState<number>(0);
     const [colorSelected, setColorSelected] = useState<number>(0);
     const [isAvailable, setIsAvailable] = useState<boolean>(false);
+    const [showNotification, setShowNotification] = useState(false);
 
     useEffect(() => {
         if (category) {
@@ -34,7 +36,7 @@ export const Detail = (props : {category : Category | null}) => {
         const existingProductIndex = cart.findIndex(
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             (//@ts-expect-error
-                item) => item.id === product.id && item.size === sizeSelected && item.color === colorSelected
+                item) => item.id == product.id && item.size.id == sizeSelected && item.color.id == colorSelected
         );
 
         if (existingProductIndex !== -1) {
@@ -60,6 +62,7 @@ export const Detail = (props : {category : Category | null}) => {
 
         localStorage.setItem("cart", JSON.stringify(cart));
         setError("Producto agregado correctamente!");
+        setShowNotification(true);
     };
 
     return (
@@ -126,11 +129,12 @@ export const Detail = (props : {category : Category | null}) => {
                                         {isAvailable ? 'Sin stock' : 'Agregar al carrito'}
                                     </button>
                                 </div>
-                                {error && <p className={'text-black text-end block font-semibold pt-5'}>{error}</p>}
                             </div>
                         </div>
-
                     </div>
+                    {showNotification && (
+                        <Notification message={error} onClose={() => setShowNotification(false)}/>
+                    )}
                 </div>
             }
         </>

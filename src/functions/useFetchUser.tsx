@@ -6,7 +6,7 @@ export const useFetchUser = () => {
 
     const fetchUser = async () => {
         try {
-            const response = await fetch("http://localhost:8080/session", {
+            const response = await fetch("http://localhost:8080/user", {
                 method: "GET",
                 credentials: "include",
             });

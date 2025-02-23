@@ -7,6 +7,7 @@ export type Type = {
 export type Season = {
     id: number;
     description: string;
+    image: string;
 }
 
 export type Size = {

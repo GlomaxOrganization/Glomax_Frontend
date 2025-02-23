@@ -49,7 +49,8 @@ export const Cart = () => {
             const response = await axios.post(url, {
                 title: 'Glomax',
                 quantity: cart.length,
-                price: totalPrice
+                price: totalPrice,
+                items: cart
             }, {
                 withCredentials: true,
                 headers: {
@@ -66,6 +67,7 @@ export const Cart = () => {
     const handleBuy = async () => {
         const id = await createPreference();
 
+        console.log(id)
         if (id) {
             setPreferenceId(id);
         }
@@ -124,10 +126,10 @@ export const Cart = () => {
 
                                             <div className={'flex justify-between items-center'}>
                                                 <p className="text-xl font-bold text-white">
-                                                    Precio Unitario: ${item.category.price}
+                                                    Precio Unitario: ${item.category.price.toFixed(2)}
                                                 </p>
                                                 <p className="text-xl font-extrabold text-white">
-                                                    Total: ${item.amount * item.category.price}
+                                                    Total: ${(item.amount * item.category.price).toFixed(2)}
                                                 </p>
                                             </div>
 
@@ -146,7 +148,7 @@ export const Cart = () => {
                             <h2 className="text-2xl font-bold mb-4">Resumen de la Compra</h2>
                             <div className="flex justify-between items-center mb-2">
                                 <p className="text-lg">Productos:</p>
-                                <p className="text-lg">{cart.length}</p>
+                                <p className="text-lg">{cart.reduce((total, item) => total + item.amount,0)}</p>
                             </div>
                             <div className="flex justify-between items-center mb-2">
                                 <p className="text-lg">Total:</p>

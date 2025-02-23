@@ -1,7 +1,19 @@
+import {useFetchUser} from "../../functions/useFetchUser.tsx";
+
 export const Header = () => {
     const cart = JSON.parse(localStorage.getItem("cart") || "[]") as unknown[];
     const amount = cart.length;
 
+    const user= useFetchUser();
+
+    const login = () => {
+        window.location.href = "http://localhost:8080/oauth2/authorization/google";
+    };
+
+    const logout = () => {
+        window.location.href = "http://localhost:8080/logout";
+    };
+    
     return (
         <header className="navbar bg-[#5C4033] shadow-md px-6 py-3">
             <div className="flex-1">
@@ -18,7 +30,7 @@ export const Header = () => {
                         <div className="indicator">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                className="h-6 w-6 text-gray-700 text-white"
+                                className="h-6 w-6 text-white"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor">
@@ -33,34 +45,45 @@ export const Header = () => {
                     </div>
                 </a>
 
-                <div className="dropdown dropdown-end">
-                    <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                        <div className="w-10 rounded-full border border-gray-300 border-gray-600">
-                            <img
-                                alt="User profile"
-                                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"/>
-                        </div>
-                    </div>
-                    <ul
-                        tabIndex={0}
-                        className="dropdown-content menu menu-sm w-52 bg-white bg-gray-800 rounded-lg shadow-lg mt-3 p-2">
-                        <li>
-                            <a className="flex justify-between text-gray-700 text-white hover:bg-gray-100 hover:bg-gray-700 rounded-lg px-4 py-2">
-                                Perfil
-                                <span className="badge bg-blue-500 text-white">Nuevo</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a className="text-gray-700 text-white hover:bg-gray-100 hover:bg-gray-700 rounded-lg px-4 py-2">
-                                Configuración
-                            </a>
-                        </li>
-                        <li>
-                            <a className="text-red-500 hover:bg-red-100 hover:bg-red-700 rounded-lg px-4 py-2">
-                                Cerrar sesión
-                            </a>
-                        </li>
-                    </ul>
+                <div className="dropdown dropdown-end ">
+                    {user ?
+                        <>
+                            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                                <div className="w-10 rounded-full border">
+                                    <img
+                                        alt={user.username}
+                                        src={user.profilePhoto}/>
+                                </div>
+                            </div>
+                            <ul
+                                tabIndex={0}
+                                className="dropdown-content menu menu-sm w-52 rounded-lg shadow-lg mt-3 p-2 bg-[#5C4033] text-white">
+                                <li>
+                                    <button onClick={logout} className="text-white rounded-lg px-4 py-2 text-l">
+                                        Cerrar sesión
+                                    </button>
+                                </li>
+                            </ul>
+                        </> :
+                        <>
+                            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                                <div className="w-10 rounded-full">
+                                    <img
+                                        alt={'Sin usuario'}
+                                        src={'/user.svg'}/>
+                                </div>
+                            </div>
+                            <ul
+                                tabIndex={0}
+                                className="dropdown-content menu menu-sm w-52 rounded-lg shadow-lg mt-3 p-2 bg-[#5C4033] text-white">
+                                <li>
+                                    <button onClick={login} className="text-white rounded-lg px-4 py-2 text-l">
+                                        Iniciar sesión
+                                    </button>
+                                </li>
+                            </ul>
+                        </>
+                    }
                 </div>
             </div>
         </header>

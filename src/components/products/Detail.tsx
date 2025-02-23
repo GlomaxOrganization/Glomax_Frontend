@@ -21,6 +21,7 @@ export const Detail = (props : {category : Category | null}) => {
     }, [category]);
 
     const product = useFetchProduct(category ? category?.id : 1, sizeSelected, colorSelected);
+
     useEffect(() => {
         setIsAvailable(product == null);
     }, [product]);
@@ -122,21 +123,23 @@ export const Detail = (props : {category : Category | null}) => {
                                 </div>
 
                                 <div className="grid gap-4">
-                                    <button disabled={isAvailable}
-                                            className={`w-[50%] text-white ${isAvailable ? 'bg-[#6E6059FF]' : 'bg-[#5C4033]' }  font-semibold py-3 rounded-lg transition-all duration-200`}
-                                            onClick={addToCart}
+                                    <button
+                                        disabled={isAvailable}
+                                        className={`w-[50%] text-white ${isAvailable ? 'bg-[#6E6059FF]' : 'bg-[#5C4033]'} font-semibold py-3 rounded-lg transition-all duration-200`}
+                                        onClick={addToCart}
                                     >
-                                        {isAvailable ? 'Sin stock' : 'Agregar al carrito'}
-                                    </button>
-                                </div>
+                                    {isAvailable ? 'Sin stock' : 'Agregar al carrito'}
+                                </button>
                             </div>
                         </div>
                     </div>
-                    {showNotification && (
-                        <Notification message={error} onClose={() => setShowNotification(false)}/>
-                    )}
                 </div>
-            }
-        </>
+            {showNotification && (
+                <Notification message={error} onClose={() => setShowNotification(false)}/>
     )
+}
+</div>
+}
+</>
+)
 }

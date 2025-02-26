@@ -37,7 +37,7 @@ export const Detail = (props : {category : Category | null}) => {
         const existingProductIndex = cart.findIndex(
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             (//@ts-expect-error
-                item) => item.id == product.id && item.size.id == sizeSelected && item.color.id == colorSelected
+                item) => item.product.size.id == sizeSelected && item.product.color.id == colorSelected
         );
 
         if (existingProductIndex !== -1) {
@@ -51,10 +51,7 @@ export const Detail = (props : {category : Category | null}) => {
             }
 
             const newProduct: ItemCart = {
-                id: product.id,
-                category: product.category,
-                size,
-                color,
+                product: product,
                 amount: amountSelected
             };
 

@@ -11,6 +11,7 @@ export const Cart = () => {
     });
 
     const [cart, setCart] = useState<ItemCart[]>([]);
+    const [preferenceId, setPreferenceId] = useState(null);
 
     useEffect(() => {
         const storedCart = JSON.parse(localStorage.getItem("cart") || "[]") as ItemCart[];
@@ -39,25 +40,18 @@ export const Cart = () => {
         }
     };
 
-    const totalPrice = cart.reduce((total, item) => total + item.amount * item.category.price, 0);
-
-    const [preferenceId, setPreferenceId] = useState(null);
+    const totalPrice = cart.reduce((total, item) => total + item.amount * item.product.category.price, 0);
 
     const createPreference = async () => {
+        console.log(cart)
         const url = 'http://localhost:8080/create-preference';
         try {
-            const response = await axios.post(url, {
-                title: 'Glomax',
-                quantity: cart.length,
-                price: totalPrice,
-                items: cart
-            }, {
+            const response = await axios.post(url, cart, {
                 withCredentials: true,
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
-
             return response.data;
         } catch (error) {
             console.error("Error al crear la preferencia:", error);
@@ -66,8 +60,6 @@ export const Cart = () => {
 
     const handleBuy = async () => {
         const id = await createPreference();
-
-        console.log(id)
         if (id) {
             setPreferenceId(id);
         }
@@ -78,21 +70,20 @@ export const Cart = () => {
             <Header />
             <div className="px-4 py-10 w-[95%] mx-auto">
                 <h1 className="text-4xl font-extrabold text-center text-[#5C4033] mb-10">Carrito de Compras</h1>
-
                 {cart.length > 0 ? (
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <div className="lg:col-span-2 space-y-6 overflow-y-scroll max-h-[70vh]">
                             {cart.map((item, index) => (
                                 <div
-                                    key={`${item.category.id}-${index}`}
+                                    key={`${item.product.category.id}-${index}`}
                                     className="flex bg-[#5C4033] rounded-xl shadow-lg"
                                 >
                                     <div className="w-1/4 h-full">
-                                        {item.category.images
-                                            .filter(i => i.color.id === item.color.id)
+                                        {item.product.category.images
+                                            .filter(i => i.color.id === item.product.color.id)
                                             .slice(0, 1)
                                             .map((image, index) => (
-                                                <img key={index} src={image.source} alt={item.category.name}
+                                                <img key={index} src={image.source} alt={item.product.category.name}
                                                      className="w-full h-80 object-cover rounded-l-xl"/>
                                             ))
                                         }
@@ -101,11 +92,11 @@ export const Cart = () => {
 
                                     <div className="w-3/4 p-6 grid grid-rows-4">
                                             <h2 className="text-2xl font-semibold text-white mb-2">
-                                                <a href={'/productDetail/'+ item.category.id}>{item.category.name}</a>
+                                                <a href={'/productDetail/'+ item.product.category.id}>{item.product.category.name}</a>
                                             </h2>
                                             <p className="text-white text-xl mb-2">
-                                                <span className="font-medium">Talle:</span> {item.size.description} |{" "}
-                                                <span className="font-medium">Color:</span> {item.color.description}
+                                                <span className="font-medium">Talle:</span> {item.product.size.description} |{" "}
+                                                <span className="font-medium">Color:</span> {item.product.color.description}
                                             </p>
                                             <div className="flex items-center gap-2 text-white">
                                                 <p className={'font-medium text-xl'}>Cantidad:</p>
@@ -126,10 +117,10 @@ export const Cart = () => {
 
                                             <div className={'flex justify-between items-center'}>
                                                 <p className="text-xl font-bold text-white">
-                                                    Precio Unitario: ${item.category.price.toFixed(2)}
+                                                    Precio Unitario: ${item.product.category.price.toFixed(2)}
                                                 </p>
                                                 <p className="text-xl font-extrabold text-white">
-                                                    Total: ${(item.amount * item.category.price).toFixed(2)}
+                                                    Total: ${(item.amount * item.product.category.price).toFixed(2)}
                                                 </p>
                                             </div>
 
@@ -165,7 +156,6 @@ export const Cart = () => {
                                 <Wallet initialization={{preferenceId: preferenceId}}
                                         customization={{texts: {valueProp: 'smart_option'}}}/>
                             }
-
                         </div>
                     </div>
                 ) : (

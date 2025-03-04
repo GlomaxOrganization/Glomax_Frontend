@@ -15,6 +15,16 @@ export type Size = {
     description: string;
 }
 
+export type TypePurchase = {
+    id: number;
+    description: string;
+}
+
+export type StatePurchase = {
+    id: number;
+    description: string;
+}
+
 export type Color = {
     id: number;
     description: string;
@@ -49,9 +59,26 @@ export type User = {
     username: string;
     email: string;
     profilePhoto: string;
+    document: string;
+    phoneNumber: string;
+    address: string;
+    zipCode: string;
+    city: string;
+    country: string;
+    province: string;
 }
 
 export type ItemCart = {
     product: Product;
     amount : number;
+}
+
+export type Purchase = {
+    id: number;
+    price : number;
+    typePurchase : TypePurchase;
+    statePurchase : StatePurchase;
+    createdAt : string;
+    image : Image;
+    title : string;
 }

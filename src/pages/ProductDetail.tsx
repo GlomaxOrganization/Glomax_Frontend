@@ -57,27 +57,29 @@ export const ProductDetail = () => {
     return (
         <div className="min-h-[93vh]">
             <Header />
-            <Detail category={category} />
-            <div className={'flex flex-col gap-24 pb-20'}>
-                <h2 className={'text-4xl font-bold text-center'}>Productos similares</h2>
-                <div className="relative w-[95%] mx-auto">
-                    <button
-                        className="absolute left-0 top-1/2 transform -translate-y-1/2 text-3xl"
-                        onClick={handlePrev}
-                    >
-                        &lt;
-                    </button>
-                    <div className="flex overflow-hidden">
-                        {getVisibleCategories().map((category, index) => (
+            <div className={''}>
+                <Detail category={category} />
+                <div className={'flex flex-col gap-24 pb-20'}>
+                    <h2 className={'text-4xl font-bold text-center'}>Productos similares</h2>
+                    <div className="relative w-[95%] mx-auto">
+                        <button
+                            className="absolute left-0 top-1/2 transform -translate-y-1/2 text-3xl"
+                            onClick={handlePrev}
+                        >
+                            &lt;
+                        </button>
+                        <div className="flex overflow-hidden">
+                            {getVisibleCategories().map((category, index) => (
                                 <ProductCard category={category} key={index}/>
-                        ))}
+                            ))}
+                        </div>
+                        <button
+                            className="absolute right-0 top-1/2 transform -translate-y-1/2 text-3xl"
+                            onClick={handleNext}
+                        >
+                            &gt;
+                        </button>
                     </div>
-                    <button
-                        className="absolute right-0 top-1/2 transform -translate-y-1/2 text-3xl"
-                        onClick={handleNext}
-                    >
-                        &gt;
-                    </button>
                 </div>
             </div>
         </div>

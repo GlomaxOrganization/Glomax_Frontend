@@ -10,9 +10,9 @@ export const ImageGallery = ({ images }: { images: Image[] }) => {
     return (
         <>
             <div className="flex">
-                <div className="grid gap-4 w-[20%]">
+                <div className="grid gap-4 lg:w-[20%] w-[15%]">
                     {images.slice(0, 5).map((image, index) => (
-                        <div key={index} className="h-32 w-32 relative">
+                        <div key={index} className="lg:h-32 lg:w-32 relative">
                             <img
                                 className="rounded-lg w-full h-full cursor-pointer"
                                 src={image.source}
@@ -35,7 +35,7 @@ export const ImageGallery = ({ images }: { images: Image[] }) => {
                     ))}
                 </div>
 
-                <div className="w-[80%]">
+                <div className="lg:w-[80%] w-[85%]">
                     {imageSelected ? (
                         <img className="h-[85vh] w-full rounded-lg" src={imageSelected.source} alt="Image" />
                     ) : (

@@ -66,8 +66,8 @@ export const Detail = (props : {category : Category | null}) => {
     return (
         <>
             {category &&
-                <div className={'grid grid-cols-2 py-20'}>
-                    <div className={'w-[80%] mx-auto'}>
+                <div className={'grid lg:grid-cols-2 py-20'}>
+                    <div className={'lg:w-[80%] mx-auto'}>
                         <ImageGallery images={category.images} />
                     </div>
                     <div className={'flex flex-col gap-8'}>
@@ -76,12 +76,12 @@ export const Detail = (props : {category : Category | null}) => {
                         </h1>
                         <h1 className={'text-black text-4xl font-bold'}>{category.name}</h1>
                         <div className={'grid grid-cols-1 gap-2'}>
-                            <h2 className={'text-black text-4xl font-bold'}>${category.price.toFixed(2)}</h2>
-                            <h2 className={'text-black text-2xl font-semibold'}>¡${(category.price - category.price * 20 / 100).toFixed(2)} con
+                            <h2 className={'text-black text-4xl font-bold'}>${(category.price + category.price * 20 / 100).toFixed(2)}</h2>
+                            <h2 className={'text-black text-2xl font-semibold'}>¡${category.price.toFixed(2)} con
                                 transferencia!</h2>
                         </div>
                         <div className="grid gap-6">
-                            <div className={'grid grid-cols-2'}>
+                            <div className={'grid lg:grid-cols-2'}>
                                 <div>
                                     <label className="block mb-2 text-lg font-medium text-black">Talles</label>
                                     <select className="select select-bordered bg-[#5C4033] w-full max-w-xs text-white"
@@ -116,7 +116,7 @@ export const Detail = (props : {category : Category | null}) => {
                                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                                                //@ts-expect-error
                                                e.target.value)}
-                                           className="input input-bordered w-full max-w-xs"/>
+                                           className="input input-bordered w-full max-w-xs bg-[#5C4033] text-white"/>
                                 </div>
 
                                 <div className="grid gap-4">

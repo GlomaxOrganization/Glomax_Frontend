@@ -59,6 +59,16 @@ export const Header = () => {
                                 tabIndex={0}
                                 className="dropdown-content menu menu-sm w-52 rounded-lg shadow-lg mt-3 p-2 bg-[#5C4033] text-white">
                                 <li>
+                                    <a href={"/perfil"} className="text-white rounded-lg px-4 py-2 text-l">
+                                        Mi perfil
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href={"/compras"} className="text-white rounded-lg px-4 py-2 text-l">
+                                        Mis compras
+                                    </a>
+                                </li>
+                                <li>
                                     <button onClick={logout} className="text-white rounded-lg px-4 py-2 text-l">
                                         Cerrar sesión
                                     </button>

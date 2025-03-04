@@ -71,9 +71,8 @@ export const Filters = (props: { setCategories: (categories: Category[]) => void
 
     return (
         <>
-
             <div className="flex justify-between items-end pb-8">
-                <form onSubmit={filterCategories} className={'flex items-end gap-6'}>
+                <form onSubmit={filterCategories} className={'flex items-end lg:gap-6 gap-2'}>
                     <div>
                         <label htmlFor="name" className="block mb-2 text-xl font-semibold text-black">Buscar</label>
                         <input type="text" id={'name'} placeholder="Buscar..." value={name}
@@ -124,7 +123,7 @@ export const Filters = (props: { setCategories: (categories: Category[]) => void
                         <form className="grid gap-10" onSubmit={filterCategories}>
                             <div>
                                 <label className="block mb-2 text-lg font-medium text-white">Temporada</label>
-                                <div className="grid grid-cols-4">
+                                <div className="grid lg:grid-cols-2 lg:gap-y-0 gap-y-4">
                                     {seasons.map((s) => (
                                         <label key={s.id} className="flex items-center gap-2">
                                             <input
@@ -140,7 +139,7 @@ export const Filters = (props: { setCategories: (categories: Category[]) => void
                             </div>
                             <div>
                                 <label className="block mb-2 text-lg font-medium text-white">Tipo</label>
-                                <div className="grid grid-cols-4">
+                                <div className="grid lg:grid-cols-4 grid-cols-2 lg:gap-y-0 gap-y-4">
                                     {types.map((t) => (
                                         <label key={t.id} className="flex items-center gap-2">
                                             <input
@@ -174,7 +173,7 @@ export const Filters = (props: { setCategories: (categories: Category[]) => void
 
                             <div>
                                 <label className="block mb-2 text-lg font-medium text-white">Colores</label>
-                                <div className="grid grid-cols-6 gap-y-4">
+                                <div className="grid lg:grid-cols-6 grid-cols-3 gap-y-4 lg:gap-x-0 gap-x-4">
                                     {colors.map((c) => (
                                         <label key={c.id} className="flex items-center gap-2">
                                             <input

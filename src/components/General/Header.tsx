@@ -25,7 +25,7 @@ export const Header = () => {
                 </h1>
             </div>
             <div className="flex-none flex gap-4">
-                <a href="/cart">
+                <a href="/carrito">
                     <div className="btn btn-ghost btn-circle">
                         <div className="indicator">
                             <svg
@@ -64,7 +64,7 @@ export const Header = () => {
                                     </a>
                                 </li>
                                 <li>
-                                    <a href={"/compras"} className="text-white rounded-lg px-4 py-2 text-l">
+                                    <a href={"/perfil"} className="text-white rounded-lg px-4 py-2 text-l">
                                         Mis compras
                                     </a>
                                 </li>

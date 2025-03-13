@@ -10,44 +10,50 @@ export const ProductCard = (props: { category: Category }) => {
                 <ImageCarousel images={category.images} />
             </a>
 
-            <div className="grid grid-rows-3 px-4">
-                <div className={'flex justify-between items-center'}>
-                    <a href={'/productDetail/' + category.id}>
-                        <h5 className="text-xl font-semibold tracking-tight text-white">
+            <div className="p-4 grid gap-4">
+                <div className="flex justify-between items-center">
+                    <a href={`/productDetail/${category.id}`}>
+                        <h5 className="text-xl font-semibold tracking-tight text-white break-words">
                             {category.name}
                         </h5>
                     </a>
-                    <img src={category.season.image} alt={category.season.description} className={'w-8'}/>
+                    <img
+                        src={category.season.image}
+                        alt={category.season.description}
+                        className="w-8"
+                    />
                 </div>
 
-                <div>
-                    <div className="mt-3 flex flex-wrap gap-2">
-                        {category.sizes.reverse().map((size, index) => (
+                <div className="flex flex-col gap-4">
+                    <div className="flex flex-wrap gap-2">
+                        {category.sizes.map((size, index) => (
                             <div
                                 key={index}
-                                className="rounded-full border border-white px-5 py-1 text-xs font-medium text-white">
+                                className="rounded-full border border-white px-4 py-1 text-xs font-medium text-white whitespace-nowrap"
+                            >
                                 {size.description}
                             </div>
                         ))}
                     </div>
 
-                    <div className="mt-3 flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                         {category.colors.map((color, index) => (
                             <div
                                 key={index}
                                 className="tooltip h-6 w-6 rounded-full border border-gray-300 shadow-sm"
                                 data-tip={color.description}
-                                style={{backgroundColor: color.code}}></div>
+                                style={{ backgroundColor: color.code }}
+                            ></div>
                         ))}
                     </div>
                 </div>
 
-                <div className="mt-5 flex items-center justify-between">
-                    <span className="text-lg font-bold text-white">
-                        ${category.price.toFixed(2)}
-                    </span>
-                    <a href={"/productDetail/" + category.id}
-                       className="rounded-lg px-4 py-2 text-sm font-medium text-white transition focus:ring-4 focus:ring-blue-300 bg-blue-500 hover:bg-blue-600">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <span className="text-lg font-bold text-white">${category.price.toFixed(2)}</span>
+                    <a
+                        href={`/productDetail/${category.id}`}
+                        className="bg-[#FFDEAFFF] hover:bg-[#C8994AFF] text-black font-semibold px-4 py-2 rounded-lg transition duration-300 text-center"
+                    >
                         Ver más
                     </a>
                 </div>

@@ -46,12 +46,14 @@ export type Category = {
     price: number;
     season: Season;
     type: Type;
+    sizeGuide: string;
 }
 
 export type Product = {
     category : Category;
     size : Size;
     color : Color;
+    stock : number;
 }
 
 export type User = {

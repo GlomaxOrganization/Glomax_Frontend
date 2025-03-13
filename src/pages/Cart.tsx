@@ -1,208 +1,169 @@
 import { Header } from "../components/General/Header.tsx";
 import { ItemCart } from "../types/types.ts";
 import { useState, useEffect } from "react";
-import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
+import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import axios from "axios";
-import {useFetchUser} from "../functions/useFetchUser.tsx";
-import {useFetchTypesPurchase} from "../functions/useFetchTypesPurchase.tsx";
+import { useFetchUser } from "../functions/useFetchUser.tsx";
+import { useFetchTypesPurchase } from "../functions/useFetchTypesPurchase.tsx";
+import { TransferData } from "./TransferData.tsx";
 
 export const Cart = () => {
-
-    initMercadoPago(`${import.meta.env.VITE_MERCADO_PAGO_TOKEN}`, {
-        locale: "es-AR",
-    });
+    initMercadoPago(`${import.meta.env.VITE_MERCADO_PAGO_TOKEN}`, { locale: "es-AR" });
 
     const [cart, setCart] = useState<ItemCart[]>([]);
     const [typePurchaseSelected, setTypePurchaseSelected] = useState<number>(1);
-    const [preferenceId, setPreferenceId] = useState(null);
+    const [preferenceId, setPreferenceId] = useState<string | null>(null);
     const [error, setError] = useState<string>("");
-    const user= useFetchUser();
-    const typesPurchase= useFetchTypesPurchase();
+    const [isPaid, setIsPaid] = useState<boolean>(false);
+    const user = useFetchUser();
+    const typesPurchase = useFetchTypesPurchase();
 
     useEffect(() => {
         const storedCart = JSON.parse(localStorage.getItem("cart") || "[]") as ItemCart[];
         setCart(storedCart);
     }, []);
 
+    const updateCart = (newCart: ItemCart[]) => {
+        setCart(newCart);
+        localStorage.setItem("cart", JSON.stringify(newCart));
+    };
+
     const handleRemoveItem = (index: number) => {
-        const updatedCart = cart.filter((_, i) => i !== index);
-        setCart(updatedCart);
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        updateCart(cart.filter((_, i) => i !== index));
     };
 
-    const handleIncreaseAmount = (index: number) => {
+    const handleAmountChange = (index: number, delta: number) => {
         const updatedCart = [...cart];
-        updatedCart[index].amount += 1;
-        setCart(updatedCart);
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
-    };
-
-    const handleDecreaseAmount = (index: number) => {
-        const updatedCart = [...cart];
-        if (updatedCart[index].amount > 1) {
-            updatedCart[index].amount -= 1;
-            setCart(updatedCart);
-            localStorage.setItem("cart", JSON.stringify(updatedCart));
-        }
+        updatedCart[index].amount = Math.max(1, updatedCart[index].amount + delta);
+        updateCart(updatedCart);
     };
 
     const totalPrice = cart.reduce((total, item) => total + item.amount * item.product.category.price, 0);
 
     const createPreference = async () => {
-        const url = 'http://localhost:8080/create-preference';
         try {
-            const response = await axios.post(url, cart, {
+            const { data } = await axios.post("http://localhost:8080/create-preference", cart, {
                 withCredentials: true,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+                headers: { "Content-Type": "application/json" },
             });
-            return response.data;
+            return data;
         } catch (error) {
             console.error("Error al crear la preferencia:", error);
         }
     };
 
     const handleTransfer = async () => {
-        const url = 'http://localhost:8080/handle-transfer';
         try {
-            const response = await axios.post(url, cart, {
+            const response = await axios.post("http://localhost:8080/handle-transfer", cart, {
                 withCredentials: true,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+                headers: { "Content-Type": "application/json" },
             });
-
-            if (response.status === 200) window.location.href = "/datos-transferencia"
+            if (response.status === 200) setIsPaid(true);
         } catch (error) {
-            console.error("Error al crear la preferencia:", error);
+            console.error("Error al procesar la transferencia:", error);
         }
     };
 
     const handleBuy = async () => {
         const id = await createPreference();
-        if (id) {
-            setPreferenceId(id);
-        }
+        if (id) setPreferenceId(id);
+    };
+
+    const handlePurchase = () => {
+        if (!user) return setError("¡Debe iniciar sesión para comprar!");
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        typePurchaseSelected === 1 ? handleBuy() : handleTransfer();
     };
 
     return (
-        <div className={'min-h-[100vh]'}>
+        <div className="min-h-screen flex flex-col ">
             <Header />
-            <div className="px-4 py-10 w-[95%] mx-auto">
-                <h1 className="text-4xl font-extrabold text-center text-[#5C4033] mb-10">Carrito de Compras</h1>
+            <div className="p-6 container mx-auto">
+                <h1 className="text-3xl md:text-4xl font-bold text-center text-[#5C4033] mb-10">
+                    Carrito de Compras
+                </h1>
+
                 {cart.length > 0 ? (
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div className="lg:col-span-2 space-y-6 overflow-y-scroll max-h-[70vh]">
+                        <div className="lg:col-span-2 space-y-6 overflow-y-auto max-h-[70vh]">
                             {cart.map((item, index) => (
-                                <div
-                                    key={`${item.product.category.id}-${index}`}
-                                    className="flex lg:flex-row flex-col bg-[#5C4033] rounded-xl shadow-lg"
-                                >
-                                    <div className="lg:w-1/4 h-full">
+                                <div key={`${item.product.category.id}-${index}`} className="flex flex-col md:flex-row bg-[#5C4033] rounded-xl shadow-lg">
+                                    <div className="w-full md:w-1/3">
                                         {item.product.category.images
-                                            .filter(i => i.color.id === item.product.color.id)
-                                            .slice(0, 1)
-                                            .map((image, index) => (
-                                                <img key={index} src={image.source} alt={item.product.category.name}
-                                                     className="w-full h-80 object-cover lg:rounded-l-xl lg:rounded-tr-none rounded-t-xl"/>
-                                            ))
-                                        }
+                                            .find((i) => i.color.id === item.product.color.id) && (
+                                            <img
+                                                src={item.product.category.images.find((i) => i.color.id === item.product.color.id)?.source}
+                                                alt={item.product.category.name}
+                                                className="w-full h-64 object-cover rounded-t-xl md:rounded-l-xl md:rounded-tr-none"
+                                            />
+                                        )}
                                     </div>
 
+                                    <div className="p-6 flex flex-col justify-between w-full">
+                                        <h2 className="text-xl md:text-2xl font-semibold text-white">
+                                            <a href={`/productDetail/${item.product.category.id}`}>
+                                                {item.product.category.name}
+                                            </a>
+                                        </h2>
+                                        <p className="text-white mt-2">
+                                            <strong>Talle:</strong> {item.product.size.description} | <strong>Color:</strong> {item.product.color.description}
+                                        </p>
 
-                                    <div className="lg:w-3/4 p-6 grid grid-rows-4">
-                                            <h2 className="lg:text-2xl text-xl font-semibold text-white lg:mb-2">
-                                                <a href={'/productDetail/'+ item.product.category.id}>{item.product.category.name}</a>
-                                            </h2>
-                                            <p className="text-white lg:text-xl text-l lg:mb-2">
-                                                <span className="font-medium">Talle:</span> {item.product.size.description} |{" "}
-                                                <span className="font-medium">Color:</span> {item.product.color.description}
-                                            </p>
-                                            <div className="flex items-center gap-2 text-white">
-                                                <p className={'font-medium lg:text-xl text-l'}>Cantidad:</p>
-                                                <button
-                                                    onClick={() => handleDecreaseAmount(index)}
-                                                    className="bg-[#FFDEAFFF] hover:bg-[#C8994AFF] text-black px-2 py-1 rounded"
-                                                >
-                                                    -
-                                                </button>
-                                                <span className="lg:text-lg text-l font-semibold">{item.amount}</span>
-                                                <button
-                                                    onClick={() => handleIncreaseAmount(index)}
-                                                    className="bg-[#FFDEAFFF] hover:bg-[#C8994AFF] text-black px-2 py-1 rounded"
-                                                >
-                                                    +
-                                                </button>
-                                            </div>
+                                        <div className="flex items-center gap-3 mt-4">
+                                            <p className="text-white font-medium">Cantidad:</p>
+                                            <button onClick={() => handleAmountChange(index, -1)} className="px-2 py-1 bg-[#FFDEAFFF] rounded hover:bg-[#C8994AFF]">-</button>
+                                            <span className="text-lg text-white">{item.amount}</span>
+                                            <button onClick={() => handleAmountChange(index, 1)} className="px-2 py-1 bg-[#FFDEAFFF] rounded hover:bg-[#C8994AFF]">+</button>
+                                        </div>
 
-                                            <div className={'flex justify-between items-center'}>
-                                                <p className="lg:text-xl font-bold text-white">
-                                                    Precio Unitario: ${item.product.category.price.toFixed(2)}
-                                                </p>
-                                                <p className="lg:text-xl font-extrabold text-white">
-                                                    Total: ${(item.amount * item.product.category.price).toFixed(2)}
-                                                </p>
-                                            </div>
+                                        <p className="text-white font-bold mt-4">
+                                            Total: ${(item.amount * item.product.category.price).toFixed(2)}
+                                        </p>
 
-                                        <button
-                                            onClick={() => handleRemoveItem(index)}
-                                            className="mt-4 bg-[#FFDEAFFF] hover:bg-[#C8994AFF] text-black font-semibold px-4 py-2 rounded-lg transition duration-300"
-                                        >
-                                            Eliminar del Carrito
+                                        <button onClick={() => handleRemoveItem(index)} className="mt-4 bg-[#FFDEAFFF] hover:bg-[#C8994AFF] text-black font-semibold px-4 py-2 rounded-lg">
+                                            Eliminar
                                         </button>
                                     </div>
                                 </div>
                             ))}
                         </div>
-
-                        <div className="bg-[#5C4033] text-white rounded-xl shadow-lg p-6 sticky top-20 h-fit">
-                            <h2 className="text-2xl font-bold mb-4">Resumen de la Compra</h2>
-                            <div className="flex justify-between items-center mb-2">
-                                <p className="text-lg">Productos:</p>
-                                <p className="text-lg">{cart.reduce((total, item) => total + item.amount,0)}</p>
-                            </div>
-                            <div className="flex justify-between items-center mb-2">
-                                <p className="text-lg">Total:</p>
-                                <p className="text-lg font-bold">${totalPrice.toFixed(2)}</p>
-                            </div>
-                            <div className={'flex justify-between items-center mb-2'}>
-                                <p className="text-lg font-bold">Tipo de pago</p>
-                                <select className="select select-bordered bg-[#FFDEAFFF] w-full max-w-xs text-black"
-                                        onChange={(e) => setTypePurchaseSelected(
-                                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                            //@ts-expect-error
-                                            e.target.value)}>
+                        <div>
+                            <div className="bg-[#5C4033] text-white p-6 rounded-xl h-fit sticky top-20 mb-10">
+                                <h2 className="text-2xl font-bold mb-6">Resumen de Compra</h2>
+                                <div className="flex justify-between items-center mb-4">
+                                    <p className="text-lg">Productos:</p>
+                                    <p className="text-lg font-bold break-all">{cart.reduce((total, item) => total + item.amount, 0)}</p>
+                                </div>
+                                <div className="flex justify-between items-center mb-4">
+                                    <p className="text-lg">Total:</p>
+                                    <p className="text-lg font-bold break-all">${totalPrice.toFixed(2)}</p>
+                                </div>
+                                <p className="text-lg font-bold break-all mb-1">Medio de pago</p>
+                                <select
+                                    onChange={(e) => setTypePurchaseSelected(Number(e.target.value))}
+                                    className="select select-bordered bg-[#FFDEAFFF] text-black w-full mb-4"
+                                >
                                     {typesPurchase.map((t) => (
                                         <option key={t.id} value={t.id}>{t.description}</option>
                                     ))}
                                 </select>
+
+                                <button onClick={handlePurchase}
+                                        className="w-full bg-[#FFDEAFFF] hover:bg-[#C8994AFF] text-black font-semibold py-2 rounded-lg">
+                                    Finalizar Compra
+                                </button>
+
+                                {error && <p className="text-red-400 mt-4">{error}</p>}
+                                {preferenceId && <Wallet initialization={{preferenceId}}
+                                                         customization={{texts: {valueProp: "smart_option"}}}/>}
+
                             </div>
-                            <button
-                                onClick={
-                                    user
-                                        ? typePurchaseSelected === 1
-                                            ? handleBuy
-                                            : handleTransfer
-                                        : () => { setError("¡Debe iniciar sesión!"); }
-                                }
-
-                                className="mt-4 w-full bg-[#FFDEAFFF] hover:bg-[#C8994AFF] text-black font-semibold px-4 py-2 rounded-lg transition duration-300"
-                            >
-                                Finalizar Compra
-                            </button>
-                            {error && <p className={'text-center font-semibold mt-3'}>{error}</p>}
-
-                            {preferenceId &&
-                                <Wallet initialization={{preferenceId: preferenceId}}
-                                        customization={{texts: {valueProp: 'smart_option'}}}/>
-                            }
+                            {isPaid && <TransferData/>}
                         </div>
                     </div>
                 ) : (
-                    <div className="text-center text-gray-600 text-xl">
-                        🛍️ Tu carrito está vacío. Agrega productos para comenzar.
-                    </div>
+                    <p className="text-center text-gray-600 text-xl">🛍️ Tu carrito está vacío. Agrega productos para
+                        comenzar.</p>
                 )}
             </div>
         </div>

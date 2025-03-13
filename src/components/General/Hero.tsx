@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 export const Hero = () =>{
     return (
-        <div className="hero min-h-[93vh]">
+        <div className="hero min-h-[92.2vh]">
             <div className="hero-content flex-col lg:flex-row">
                 <div>
                     <motion.div
@@ -26,13 +26,13 @@ export const Hero = () =>{
                                 whileInView={{opacity: 1, x: 0}}
                                 transition={{duration: 1, delay: 0.6}}
                             >
-                                Exprésate con cada outfit. Ropa única para personas auténticas. ¡Compra ahora y marca la
+                                Expresate con cada outfit. Ropa única para personas auténticas. ¡Comprá ahora y marcá la
                                 diferencia!
                             </motion.p>
                             <div className="flex justify-center lg:justify-start">
                                 <motion.a
                                     href={'/products'}
-                                    className="bg-[#a86b00] hover:bg-[#a86b00] text-white font-semibold px-4 py-2 rounded-lg text-center inline-block"
+                                    className="bg-[#5C4033] hover:bg-[#a86b00] text-white font-semibold px-4 py-2 rounded-lg text-center inline-block"
                                     initial={{opacity: 0, x: -50}}
                                     whileInView={{opacity: 1, x: 0}}
                                     transition={{duration: 1, delay: 0.9}}

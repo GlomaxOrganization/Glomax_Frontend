@@ -2,6 +2,7 @@ import {useFetchUser} from "../../functions/useFetchUser.tsx";
 
 export const Header = () => {
     const cart = JSON.parse(localStorage.getItem("cart") || "[]") as unknown[];
+
     const amount = cart.length;
 
     const user= useFetchUser();
@@ -13,89 +14,96 @@ export const Header = () => {
     const logout = () => {
         window.location.href = "http://localhost:8080/logout";
     };
-    
-    return (
-        <header className="navbar bg-[#5C4033] shadow-md px-6 py-3">
-            <div className="flex-1">
-                <h1>
-                    <a href={"/"}
-                       className="text-2xl font-bold text-white  transition">
-                        Glomax
-                    </a>
-                </h1>
-            </div>
-            <div className="flex-none flex gap-4">
-                <a href="/carrito">
-                    <div className="btn btn-ghost btn-circle">
-                        <div className="indicator">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-6 w-6 text-white"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-                            </svg>
-                            <span className="badge badge-sm indicator-item bg-red-500 text-white">{amount}</span>
-                        </div>
-                    </div>
-                </a>
 
-                <div className="dropdown dropdown-end ">
-                    {user ?
-                        <>
-                            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                                <div className="w-10 rounded-full border">
-                                    <img
-                                        alt={user.username}
-                                        src={user.profilePhoto}/>
-                                </div>
+    return (
+        <header className="bg-[#5C4033]">
+            <div className="navbar px-6 py-3">
+                <div className="flex-1">
+                    <h1>
+                        <a href={"/"}
+                           className="text-2xl font-bold text-white  transition">
+                            Glomax
+                        </a>
+                    </h1>
+                </div>
+                <div className="flex-none flex gap-4">
+                    <a href="/carrito">
+                        <div className="btn btn-ghost btn-circle">
+                            <div className="indicator">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-6 w-6 text-white"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                </svg>
+                                <span className="badge badge-sm indicator-item bg-red-500 text-white">{amount}</span>
                             </div>
-                            <ul
-                                tabIndex={0}
-                                className="dropdown-content menu menu-sm w-52 rounded-lg shadow-lg mt-3 p-2 bg-[#5C4033] text-white">
-                                <li>
-                                    <a href={"/perfil"} className="text-white rounded-lg px-4 py-2 text-l">
-                                        Mi perfil
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href={"/perfil"} className="text-white rounded-lg px-4 py-2 text-l">
-                                        Mis compras
-                                    </a>
-                                </li>
-                                <li>
-                                    <button onClick={logout} className="text-white rounded-lg px-4 py-2 text-l">
-                                        Cerrar sesión
-                                    </button>
-                                </li>
-                            </ul>
-                        </> :
-                        <>
-                            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                                <div className="w-10 rounded-full">
-                                    <img
-                                        alt={'Sin usuario'}
-                                        src={'/user.svg'}/>
+                        </div>
+                    </a>
+
+                    <div className="dropdown dropdown-end ">
+                        {user ?
+                            <>
+                                <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                                    <div className="w-10 rounded-full border">
+                                        <img
+                                            alt={user.username}
+                                            src={user.profilePhoto}/>
+                                    </div>
                                 </div>
-                            </div>
-                            <ul
-                                tabIndex={0}
-                                className="dropdown-content menu menu-sm w-52 rounded-lg shadow-lg mt-3 p-2 bg-[#5C4033] text-white">
-                                <li>
-                                    <button onClick={login} className="text-white rounded-lg px-4 py-2 text-l">
-                                        Iniciar sesión
-                                    </button>
-                                </li>
-                            </ul>
-                        </>
-                    }
+                                <ul
+                                    tabIndex={0}
+                                    className="dropdown-content menu menu-sm w-52 rounded-lg shadow-lg mt-3 p-2 bg-[#FFDEAFFF] text-black">
+                                    <li>
+                                        <a href={"/perfil"} className="rounded-lg px-4 py-2 text-l">
+                                            Mi perfil
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href={"/perfil"} className="rounded-lg px-4 py-2 text-l">
+                                            Mis compras
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <button onClick={logout} className="rounded-lg px-4 py-2 text-l">
+                                            Cerrar sesión
+                                        </button>
+                                    </li>
+                                </ul>
+                            </> :
+                            <>
+                                <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                                    <div className="w-10 rounded-full">
+                                        <img
+                                            alt={'Sin usuario'}
+                                            src={'/user.svg'}/>
+                                    </div>
+                                </div>
+                                <ul
+                                    tabIndex={0}
+                                    className="dropdown-content menu menu-sm w-52 rounded-lg shadow-lg mt-3 p-2 bg-[#FFDEAFFF] text-black">
+                                    <li>
+                                        <button onClick={login} className="rounded-lg px-4 py-2 text-l">
+                                            Iniciar sesión
+                                        </button>
+                                    </li>
+                                </ul>
+                            </>
+                        }
+                    </div>
                 </div>
             </div>
+            <nav className="grid grid-cols-3 py-3 shadow-lg text-white text-lg font-semibold text-center">
+                <a href={'/envios'}>Envíos</a>
+                <a href={'/productos'}>Productos</a>
+                <a href={'contacto'}>Contacto</a>
+            </nav>
         </header>
     );
 };

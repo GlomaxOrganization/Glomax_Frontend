@@ -8,8 +8,9 @@ import {ProductDetail} from "./pages/ProductDetail.tsx";
 import {Cart} from "./pages/Cart.tsx";
 import {Profile} from "./pages/Profile.tsx";
 import {EditProfile} from "./pages/EditProfile.tsx";
-import {TransferData} from "./pages/TransferData.tsx";
+import {TransferData} from "./components/Cart/TransferData.tsx";
 import {PurchaseDetail} from "./pages/PurchaseDetail.tsx";
+import {ShippingData} from "./pages/ShippingData.tsx";
 
 const root = createRoot(document.getElementsByTagName('main')[0]);
 
@@ -18,13 +19,14 @@ root.render(
         <Suspense fallback={<p>Cargando...</p>}>
             <Routes>
                 <Route path={'/'} element={<Home />} />
-                <Route path={'/products'} element={<Products />} />
+                <Route path={'/productos'} element={<Products />} />
                 <Route path={'/productDetail/:id'} element={<ProductDetail />} />
                 <Route path={'/carrito'} element={<Cart />} />
                 <Route path={'/perfil'} element={<Profile />} />
                 <Route path={'/editar-perfil'} element={<EditProfile />} />
                 <Route path={'/datos-transferencia'} element={<TransferData />} />
                 <Route path={'/detalle-compra/:id'} element={<PurchaseDetail />} />
+                <Route path={'/envios'} element={<ShippingData />} />
             </Routes>
         </Suspense>
     </BrowserRouter>,

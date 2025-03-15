@@ -1,11 +1,15 @@
-import {Hero} from "../components/General/Hero.tsx";
-import {Header} from "../components/General/Header.tsx";
-export const Home = () => {
+import { Hero } from "../components/home/Hero.tsx";
+import { Header } from "../components/General/Header.tsx";
+import {VarietyOfProducts} from "../components/home/VarietyOfProducts.tsx";
+import {ShippingType} from "../components/home/ShippingType.tsx";
 
+export const Home = () => {
     return (
         <>
             <Header />
             <Hero />
+            <VarietyOfProducts />
+            <ShippingType />
         </>
-    )
-}
+    );
+};

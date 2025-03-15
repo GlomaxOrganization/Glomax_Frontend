@@ -37,7 +37,7 @@ export const Products = () => {
                     transition={{duration: 0.8}}
                     className="text-4xl font-bold text-center text-black mb-6"
                 >
-                    Descubrí nuestros productos
+                    Productos
                 </motion.h1>
 
                 <motion.p

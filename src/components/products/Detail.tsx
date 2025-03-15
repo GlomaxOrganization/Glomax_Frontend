@@ -81,7 +81,7 @@ export const Detail = ({ category }: { category: Category | null }) => {
 
                     <div className="flex flex-col gap-8 p-4 lg:p-0">
                         <h1 className="text-black text-xl font-semibold">
-                            <a href="/products">Productos {'>'}</a>
+                            <a href="/productos">Productos {'>'}</a>
                         </h1>
 
                         <h1 className="text-black text-4xl font-bold">{category.name}</h1>

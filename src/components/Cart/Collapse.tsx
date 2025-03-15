@@ -1,14 +1,23 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { motion } from "framer-motion";
 import { Purchase } from "../../types/types.ts";
 import { formatDate } from "../../functions/formatDate.tsx";
 import { InfoRow } from "../General/InfoRow.tsx";
-import { TransferData } from "../../pages/TransferData.tsx";
+import { TransferData } from "./TransferData.tsx";
 import { useModal } from "../Utilities/useModal.tsx";
 
-export const Collapse = ({ purchase }: { purchase: Purchase }) => {
+export const Collapse = ( props : { purchase: Purchase, index : number }) => {
     const [show, setShow] = useState(false);
     const { isOpen, isVisible, setIsOpen, closeWithAnimation } = useModal();
+    const {purchase, index} = props;
+
+    useEffect(() => {
+        if (document.referrer.includes("/carrito") && !sessionStorage.getItem("modalShown")) {
+            setIsOpen(true);
+            setShow(index===0)
+            sessionStorage.setItem("modalShown", "true");
+        }
+    }, [setIsOpen, index]);
 
     const collapseAnimation = {
         initial: { height: 0, opacity: 0 },
@@ -49,7 +58,7 @@ export const Collapse = ({ purchase }: { purchase: Purchase }) => {
                         <h2 className="font-bold text-lg sm:text-xl">{purchase.title}</h2>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            <InfoRow label="Precio:" value={`$${purchase.price}`} />
+                            <InfoRow label="Precio:" value={`$${purchase.price + purchase.shippingCost}`} />
                             <InfoRow label="Estado:" value={purchase.statePurchase.description} />
                             <InfoRow label="Tipo de pago:" value={purchase.typePurchase.description} />
 
@@ -58,7 +67,7 @@ export const Collapse = ({ purchase }: { purchase: Purchase }) => {
                                     onClick={() => setIsOpen(true)}
                                     className="bg-[#FFDEAFFF] hover:bg-[#C8994AFF] text-black font-semibold px-4 py-2 rounded-lg transition duration-300"
                                 >
-                                    Ver detalles de transferencia
+                                    Ver datos de transferencia
                                 </button>
                             )}
                         </div>
@@ -79,7 +88,7 @@ export const Collapse = ({ purchase }: { purchase: Purchase }) => {
                         }`}
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <TransferData />
+                        <TransferData/>
                     </div>
                 </div>
             )}

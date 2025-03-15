@@ -83,4 +83,5 @@ export type Purchase = {
     createdAt : string;
     image : Image;
     title : string;
+    shippingCost : number;
 }

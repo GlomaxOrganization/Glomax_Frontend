@@ -69,7 +69,7 @@ export const Profile = () => {
                         {purchases.length > 0 ? (
                             purchases.map((purchase, index) => (
                                 <div className="flex flex-col gap-8" key={index}>
-                                    <Collapse key={index} purchase={purchase} />
+                                    <Collapse key={index} purchase={purchase} index={index} />
                                 </div>
                             ))
                         ) : (
@@ -78,7 +78,7 @@ export const Profile = () => {
                             </p>
                         )}
                         <a
-                            href="/products"
+                            href="/productos"
                             className="w-full sm:w-[60%] mx-auto bg-[#FFDEAFFF] hover:bg-[#C8994AFF] text-black font-semibold px-4 py-2 rounded-lg transition duration-300 text-center"
                         >
                             Comprar

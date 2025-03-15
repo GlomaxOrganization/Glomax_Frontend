@@ -5,7 +5,6 @@ import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import axios from "axios";
 import { useFetchUser } from "../functions/useFetchUser.tsx";
 import { useFetchTypesPurchase } from "../functions/useFetchTypesPurchase.tsx";
-import { TransferData } from "./TransferData.tsx";
 
 export const Cart = () => {
     initMercadoPago(`${import.meta.env.VITE_MERCADO_PAGO_TOKEN}`, { locale: "es-AR" });
@@ -14,9 +13,10 @@ export const Cart = () => {
     const [typePurchaseSelected, setTypePurchaseSelected] = useState<number>(1);
     const [preferenceId, setPreferenceId] = useState<string | null>(null);
     const [error, setError] = useState<string>("");
-    const [isPaid, setIsPaid] = useState<boolean>(false);
     const user = useFetchUser();
     const typesPurchase = useFetchTypesPurchase();
+
+    sessionStorage.removeItem("modalShown");
 
     useEffect(() => {
         const storedCart = JSON.parse(localStorage.getItem("cart") || "[]") as ItemCart[];
@@ -38,8 +38,6 @@ export const Cart = () => {
         updateCart(updatedCart);
     };
 
-    const totalPrice = cart.reduce((total, item) => total + item.amount * item.product.category.price, 0);
-
     const createPreference = async () => {
         try {
             const { data } = await axios.post("http://localhost:8080/create-preference", cart, {
@@ -58,7 +56,7 @@ export const Cart = () => {
                 withCredentials: true,
                 headers: { "Content-Type": "application/json" },
             });
-            if (response.status === 200) setIsPaid(true);
+            if (response.status === 200) window.location.href="/perfil";
         } catch (error) {
             console.error("Error al procesar la transferencia:", error);
         }
@@ -75,69 +73,103 @@ export const Cart = () => {
         typePurchaseSelected === 1 ? handleBuy() : handleTransfer();
     };
 
+    const totalItems = cart.reduce((total, item) => total + item.amount, 0);
+
+    const totalPriceWithoutShipping = cart.reduce((total, item) => total + item.amount * item.product.category.price, 0);
+
+    const shippingCost = totalPriceWithoutShipping >= 35000 ? 0 : 8000;
+
+    const totalPrice = totalPriceWithoutShipping + shippingCost;
+
+
+
     return (
         <div className="min-h-screen flex flex-col ">
             <Header />
             <div className="p-6 container mx-auto">
-                <h1 className="text-3xl md:text-4xl font-bold text-center text-[#5C4033] mb-10">
+                <h1 className="text-3xl md:text-4xl font-bold text-center text-[#5C4033] mb-5">
                     Carrito de Compras
                 </h1>
+                <p className="text-center text-2xl font-semibold text-black mb-6">
+                    ¡Superando los $35000, el envío es gratis!
+                </p>
 
                 {cart.length > 0 ? (
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div className="lg:col-span-2 space-y-6 overflow-y-auto max-h-[70vh]">
-                            {cart.map((item, index) => (
-                                <div key={`${item.product.category.id}-${index}`} className="flex flex-col md:flex-row bg-[#5C4033] rounded-xl shadow-lg">
-                                    <div className="w-full md:w-1/3">
-                                        {item.product.category.images
-                                            .find((i) => i.color.id === item.product.color.id) && (
-                                            <img
-                                                src={item.product.category.images.find((i) => i.color.id === item.product.color.id)?.source}
-                                                alt={item.product.category.name}
-                                                className="w-full h-64 object-cover rounded-t-xl md:rounded-l-xl md:rounded-tr-none"
-                                            />
-                                        )}
-                                    </div>
-
-                                    <div className="p-6 flex flex-col justify-between w-full">
-                                        <h2 className="text-xl md:text-2xl font-semibold text-white">
-                                            <a href={`/productDetail/${item.product.category.id}`}>
-                                                {item.product.category.name}
-                                            </a>
-                                        </h2>
-                                        <p className="text-white mt-2">
-                                            <strong>Talle:</strong> {item.product.size.description} | <strong>Color:</strong> {item.product.color.description}
-                                        </p>
-
-                                        <div className="flex items-center gap-3 mt-4">
-                                            <p className="text-white font-medium">Cantidad:</p>
-                                            <button onClick={() => handleAmountChange(index, -1)} className="px-2 py-1 bg-[#FFDEAFFF] rounded hover:bg-[#C8994AFF]">-</button>
-                                            <span className="text-lg text-white">{item.amount}</span>
-                                            <button onClick={() => handleAmountChange(index, 1)} className="px-2 py-1 bg-[#FFDEAFFF] rounded hover:bg-[#C8994AFF]">+</button>
+                        <div className={'lg:col-span-2 flex flex-col gap-y-6'}>
+                            <div className="space-y-6 overflow-y-auto max-h-[60vh] ">
+                                {cart.map((item, index) => (
+                                    <div key={`${item.product.category.id}-${index}`}
+                                         className="flex flex-col md:flex-row bg-[#5C4033] rounded-xl shadow-lg">
+                                        <div className="w-full md:w-1/3">
+                                            {item.product.category.images
+                                                .find((i) => i.color.id === item.product.color.id) && (
+                                                <img
+                                                    src={item.product.category.images.find((i) => i.color.id === item.product.color.id)?.source}
+                                                    alt={item.product.category.name}
+                                                    className="w-full h-64 object-cover rounded-t-xl md:rounded-l-xl md:rounded-tr-none"
+                                                />
+                                            )}
                                         </div>
 
-                                        <p className="text-white font-bold mt-4">
-                                            Total: ${(item.amount * item.product.category.price).toFixed(2)}
-                                        </p>
+                                        <div className="p-6 flex flex-col justify-between w-full">
+                                            <h2 className="text-xl md:text-2xl font-semibold text-white">
+                                                <a href={`/productDetail/${item.product.category.id}`}>
+                                                    {item.product.category.name}
+                                                </a>
+                                            </h2>
+                                            <p className="text-white mt-2">
+                                                <strong>Talle:</strong> {item.product.size.description} | <strong>Color:</strong> {item.product.color.description}
+                                            </p>
 
-                                        <button onClick={() => handleRemoveItem(index)} className="mt-4 bg-[#FFDEAFFF] hover:bg-[#C8994AFF] text-black font-semibold px-4 py-2 rounded-lg">
-                                            Eliminar
-                                        </button>
+                                            <div className="flex items-center gap-3 mt-4">
+                                                <p className="text-white font-medium">Cantidad:</p>
+                                                <button onClick={() => handleAmountChange(index, -1)}
+                                                        className="px-2 py-1 bg-[#FFDEAFFF] rounded hover:bg-[#C8994AFF]">-
+                                                </button>
+                                                <span className="text-lg text-white">{item.amount}</span>
+                                                <button onClick={() => handleAmountChange(index, 1)}
+                                                        className="px-2 py-1 bg-[#FFDEAFFF] rounded hover:bg-[#C8994AFF]">+
+                                                </button>
+                                            </div>
+
+                                            <p className="text-white font-bold mt-4">
+                                                Total: ${(item.amount * item.product.category.price).toFixed(2)}
+                                            </p>
+
+                                            <button onClick={() => handleRemoveItem(index)}
+                                                    className="mt-4 bg-[#FFDEAFFF] hover:bg-[#C8994AFF] text-black font-semibold px-4 py-2 rounded-lg">
+                                                Eliminar
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
+                            <a href={'/products'} className={''}>
+                                <button
+                                    className="w-full bg-[#5C4033] hover:bg-[#5C4033] text-white font-semibold py-2 rounded-lg">
+                                    Comprar
+                                </button>
+                            </a>
                         </div>
                         <div>
                             <div className="bg-[#5C4033] text-white p-6 rounded-xl h-fit sticky top-20 mb-10">
                                 <h2 className="text-2xl font-bold mb-6">Resumen de Compra</h2>
                                 <div className="flex justify-between items-center mb-4">
                                     <p className="text-lg">Productos:</p>
-                                    <p className="text-lg font-bold break-all">{cart.reduce((total, item) => total + item.amount, 0)}</p>
+                                    <p className="text-lg font-bold break-all">{totalItems}</p>
                                 </div>
+
+                                <div className="flex justify-between items-center mb-4">
+                                    <p className="text-lg">Costo de envío:</p>
+                                    <p className="text-lg font-bold break-all">${shippingCost}</p>
+                                </div>
+
                                 <div className="flex justify-between items-center mb-4">
                                     <p className="text-lg">Total:</p>
                                     <p className="text-lg font-bold break-all">${totalPrice.toFixed(2)}</p>
                                 </div>
+
                                 <p className="text-lg font-bold break-all mb-1">Medio de pago</p>
                                 <select
                                     onChange={(e) => setTypePurchaseSelected(Number(e.target.value))}
@@ -158,7 +190,6 @@ export const Cart = () => {
                                                          customization={{texts: {valueProp: "smart_option"}}}/>}
 
                             </div>
-                            {isPaid && <TransferData/>}
                         </div>
                     </div>
                 ) : (

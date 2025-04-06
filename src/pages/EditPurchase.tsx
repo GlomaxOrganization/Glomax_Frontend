@@ -2,40 +2,69 @@ import { Header } from "../components/General/Header.tsx";
 import { useParams } from "react-router-dom";
 import { useFetchPurchaseById } from "../functions/useFetchPurchaseById.tsx";
 import { useState, useEffect } from "react";
-import {useFetchUser} from "../functions/useFetchUser.tsx";
+import axios from "axios";
 
-export const PurchaseDetail = () => {
+export const EditPurchase = () => {
     const { id } = useParams();
     const purchase = useFetchPurchaseById(id);
     const [error, setError] = useState<string | null>(null);
-    const user = useFetchUser();
+    const [trackingCode, setTrackingCode] = useState<string | undefined>("");
+    const [statePurchase, setStatePurchase] = useState<number | undefined>(1);
+    const statesPurchase = {
+        1: "No pagado",
+        2: "En preparación",
+        3: "En camino",
+        4: "Entregado"
+    };
 
     useEffect(() => {
         if (!purchase) {
             setError("Hubo un error al encontrar la compra buscada.");
         }else{
+            setTrackingCode(purchase.trackingCode);
+            setStatePurchase(purchase.statePurchase.id)
             setError(null);
         }
     }, [purchase]);
 
+    const editSale = async () => {
+        try {
+            const response = await axios.post(
+                "http://localhost:8080/edit-purchase",
+                {
+                    statePurchase,
+                    trackingCode,
+                    id,
+                },
+                {
+                    withCredentials: true,
+                    headers: { "Content-Type": "application/json" },
+                }
+            );
+
+            if (response.status === 200) window.location.href='/detalle-compra/'+id;
+        } catch (error) {
+            console.error("Error al procesar la transferencia:", error);
+        }
+    };
+
+
     return (
         <>
-            <Header userObtained={user} />
+            <Header userObtained={null} />
             <div className="p-6 container mx-auto min-h-[86.6vh]">
                 <h1 className="text-3xl md:text-4xl font-bold text-center text-[#5C4033] mb-5">
                     Detalle de la Compra {' -> #' + purchase?.id}
                 </h1>
-                {user?.id == 1 &&
-                    <div className="flex justify-center">
-                        <button
-                            onClick={() => window.location.href = '/editar-compra/' + id}
-                            className="bg-[#5C4033] hover:bg-[#C8994AFF] text-white hover:text-black font-semibold px-4 py-2 rounded-lg transition duration-300 min-w-[10%]"
-                        >
-                            Editar
-                        </button>
-                    </div>
-                }
-                <div className="my-20">
+                <div className="flex justify-center">
+                    <button
+                        onClick={() => window.location.href = '/detalle-compra/' + id}
+                        className="bg-[#5C4033] hover:bg-[#C8994AFF] text-white hover:text-black font-semibold px-4 py-2 rounded-lg transition duration-300 min-w-[10%]"
+                    >
+                        Regresar
+                    </button>
+                </div>
+                <div className="mt-20">
                     <table className="border border-black w-full mt-10">
                         <thead>
                         <tr className="border border-black bg-[#5C4033] text-white lg:text-xl text-l font-bold">
@@ -50,8 +79,31 @@ export const PurchaseDetail = () => {
                         <tr
                             className="border border-black text-center lg:text-xl text-l font-semibold bg-[#ffdeaf]"
                         >
-                            <td className={'border border-black'}>{purchase?.trackingCode}</td>
-                            <td className={'border border-black'}>{purchase?.statePurchase.description}</td>
+                            <td className={'border border-black'}>
+                                <input
+                                    type="text"
+                                    value={trackingCode}
+                                    onInput={(event) => setTrackingCode(
+                                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                        //@ts-expect-error
+                                        event.target.value)}
+                                    className="input input-bordered w-full bg-[#5C4033] text-white"
+                                />
+                            </td>
+                            <td className={'border border-black'}>
+                                <select
+                                    className="select select-bordered bg-[#5C4033] w-full max-w-xs text-white"
+                                    onChange={(e) => setStatePurchase(Number(e.target.value))}
+                                    value={statePurchase}
+                                >
+                                    {Object.entries(statesPurchase).map(([key, value]) => (
+                                        <option key={key} value={key}>
+                                            {value}
+                                        </option>
+                                    ))}
+                                </select>
+
+                            </td>
                             <td className={'border border-black'}>{purchase?.typePurchase.description}</td>
                             <td className={'border border-black'}>${purchase?.shippingCost}</td>
                             <td className={'border border-black'}>${purchase?.price}</td>
@@ -60,7 +112,16 @@ export const PurchaseDetail = () => {
                     </table>
 
                 </div>
-                <h2 className="text-3xl md:text-4xl font-bold text-center text-[#5C4033] mb-5">
+
+                <button
+                    onClick={editSale}
+                    className="bg-[#5C4033] hover:bg-[#C8994AFF] text-white hover:text-black font-semibold px-4 py-2 mt-10 rounded-lg transition duration-300 w-full"
+                >
+                Guardar cambios
+                </button>
+
+
+                <h2 className="text-3xl md:text-4xl font-bold text-center text-[#5C4033] mb-5 mt-10">
                     {purchase?.items.length != undefined && purchase?.items.length > 1 ? 'Productos' : 'Producto'}
                 </h2>
                 <div
@@ -100,6 +161,7 @@ export const PurchaseDetail = () => {
                         </div>
                     ))}
                 </div>
+
                 {error && <p className="text-2xl text-center text-black">{error}</p>}
             </div>
         </>

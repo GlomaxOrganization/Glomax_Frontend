@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 export const Hero = () => {
     return (
-        <div className="container min-h-[85vh] mx-auto px-4 sm:px-8 flex flex-col-reverse lg:flex-row items-center justify-between">
+        <div className="container min-h-[80vh] mx-auto px-4 sm:px-8 flex flex-col-reverse lg:flex-row items-center justify-between">
             <motion.div
                 className="flex flex-col gap-8 lg:gap-12 text-center lg:text-left"
                 initial={{ opacity: 0, y: -50 }}
@@ -30,7 +30,7 @@ export const Hero = () => {
                 <div className="flex justify-center lg:justify-start">
                     <motion.a
                         href="/productos"
-                        className="bg-[#5C4033] hover:bg-[#a86b00] text-white font-semibold px-6 py-3 rounded-lg"
+                        className="bg-[#5C4033] hover:bg-[#C8994AFF] hover:text-black text-white font-semibold px-6 py-3 rounded-lg"
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 1, delay: 0.9 }}

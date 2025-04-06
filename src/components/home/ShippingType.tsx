@@ -13,6 +13,7 @@ export const ShippingType = () => {
         }),
         exit: { opacity: 0, scale: 0.9 },
     };
+
     return (
         <div
             className="container min-h-screen mx-auto px-4 sm:px-8 flex flex-col-reverse lg:flex-row items-center justify-between">
@@ -46,7 +47,7 @@ export const ShippingType = () => {
                 <div className="flex justify-center lg:justify-start">
                     <motion.a
                         href="/envios"
-                        className="bg-[#5C4033] hover:bg-[#a86b00] text-white font-semibold px-6 py-3 rounded-lg"
+                        className="bg-[#5C4033] hover:bg-[#C8994AFF] hover:text-black text-white font-semibold px-6 py-3 rounded-lg"
                         initial={{opacity: 0, x: -50}}
                         whileInView={{opacity: 1, x: 0}}
                         transition={{duration: 1, delay: 0.9}}

@@ -76,19 +76,22 @@ export const Detail = ({ category }: { category: Category | null }) => {
             {category && (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 py-10 min-h-[92vh] md:pt-28">
                     <div className="w-full lg:w-[80%] mx-auto">
-                        <ImageGallery images={category.images} />
+                        <ImageGallery images={category.images.filter(image => image.color.id == colorSelected)} />
                     </div>
 
                     <div className="flex flex-col gap-8 p-4 lg:p-0">
                         <h1 className="text-black text-xl font-semibold">
-                            <a href="/productos">Productos {'>'}</a>
+                            <a href="/productos"
+                               className="relative text-black after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 hover:after:w-full"
+
+                            >Productos {'>'}</a>
                         </h1>
 
                         <h1 className="text-black text-4xl font-bold">{category.name}</h1>
 
                         <div className="grid gap-2">
                             <h2 className="text-black text-4xl font-bold">
-                                ${((category.price * 1.2).toFixed(2))}
+                                ${((category.price + category.price * 10 / 100).toFixed(2))}
                             </h2>
                             <h2 className="text-black text-2xl font-semibold">
                                 ¡${category.price.toFixed(2)} con transferencia!
@@ -107,7 +110,7 @@ export const Detail = ({ category }: { category: Category | null }) => {
                                         onChange={(e) => setSizeSelected(Number(e.target.value))}
                                         value={sizeSelected}
                                     >
-                                        {category.sizes.reverse().map((s) => (
+                                        {category.sizes.map((s) => (
                                             <option key={s.id} value={s.id}>
                                                 {s.description}
                                             </option>
@@ -157,7 +160,7 @@ export const Detail = ({ category }: { category: Category | null }) => {
                                 <button
                                     disabled={isAvailable}
                                     className={`w-full text-white ${
-                                        isAvailable ? "bg-gray-400" : "bg-[#5C4033]"
+                                        isAvailable ? "bg-gray-400" : "bg-[#5C4033] hover:bg-[#C8994AFF] hover:text-black"
                                     } font-semibold py-3 rounded-lg transition-all duration-200`}
                                     onClick={addToCart}
                                 >

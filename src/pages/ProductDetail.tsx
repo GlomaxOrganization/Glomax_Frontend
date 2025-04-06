@@ -69,7 +69,7 @@ export const ProductDetail = () => {
 
     return (
         <div className="min-h-[93vh]">
-            <Header />
+            <Header  userObtained={null}/>
 
             <div className="container mx-auto">
                 <Detail category={category} />

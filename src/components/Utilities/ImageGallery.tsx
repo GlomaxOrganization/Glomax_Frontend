@@ -1,10 +1,15 @@
 import { Image } from "../../types/types.ts";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { Carousel } from "./Carousel.tsx";
 import { useModal } from "./useModal.tsx";
 
 export const ImageGallery = ({ images }: { images: Image[] }) => {
     const [imageSelected, setImageSelected] = useState<Image | null>(images[0] || null);
+    
+    useEffect(() => {
+        setImageSelected(images[0]);
+    }, [images])
+
     const { isOpen, isVisible, setIsOpen, closeWithAnimation } = useModal();
 
     return (

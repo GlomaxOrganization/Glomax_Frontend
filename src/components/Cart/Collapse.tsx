@@ -1,15 +1,15 @@
 import {useEffect, useState} from "react";
 import { motion } from "framer-motion";
-import { Purchase } from "../../types/types.ts";
+import {Purchase, User} from "../../types/types.ts";
 import { formatDate } from "../../functions/formatDate.tsx";
 import { InfoRow } from "../General/InfoRow.tsx";
 import { TransferData } from "./TransferData.tsx";
 import { useModal } from "../Utilities/useModal.tsx";
 
-export const Collapse = ( props : { purchase: Purchase, index : number }) => {
+export const Collapse = ( props : { purchase: Purchase, index : number, user : User | null }) => {
     const [show, setShow] = useState(false);
     const { isOpen, isVisible, setIsOpen, closeWithAnimation } = useModal();
-    const {purchase, index} = props;
+    const {purchase, index, user} = props;
 
     useEffect(() => {
         if (document.referrer.includes("/carrito") && !sessionStorage.getItem("modalShown")) {
@@ -26,7 +26,7 @@ export const Collapse = ( props : { purchase: Purchase, index : number }) => {
         transition: { duration: 0.4, ease: "easeInOut" },
     };
 
-    const shouldShowModal = purchase.statePurchase.id === 1 && purchase.typePurchase.id === 2;
+    const shouldShowModal = purchase.statePurchase.id === 1 && purchase.typePurchase.id === 1;
 
     return (
         <div className="w-full flex flex-col p-4 border border-[#FFDEAFFF] rounded-2xl shadow-lg">
@@ -34,8 +34,8 @@ export const Collapse = ( props : { purchase: Purchase, index : number }) => {
                 className="w-full flex justify-between items-center text-lg font-semibold sm:text-base"
                 onClick={() => setShow((prev) => !prev)}
             >
-                <span className="truncate">
-                    Compra #{purchase.id} | {formatDate(purchase.createdAt)}
+                <span className="truncate text-lg">
+                    Compra #{purchase.id} | {formatDate(purchase.createdAt)} | {user?.id == 1 && purchase.clientName}
                 </span>
                 <span
                     className={`transform transition-transform duration-300 ${
@@ -47,7 +47,7 @@ export const Collapse = ( props : { purchase: Purchase, index : number }) => {
             </button>
 
             <motion.div {...collapseAnimation} className="overflow-hidden flex flex-col gap-6">
-                <div className="flex flex-col sm:flex-row items-start gap-4 pt-4">
+                <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
                     <img
                         src={purchase.image.source}
                         alt={purchase.title}
@@ -58,9 +58,9 @@ export const Collapse = ( props : { purchase: Purchase, index : number }) => {
                         <h2 className="font-bold text-lg sm:text-xl">{purchase.title}</h2>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            <InfoRow label="Precio:" value={`$${purchase.price + purchase.shippingCost}`} />
-                            <InfoRow label="Estado:" value={purchase.statePurchase.description} />
-                            <InfoRow label="Tipo de pago:" value={purchase.typePurchase.description} />
+                            <InfoRow label="Precio:" value={`$${purchase.price}`}/>
+                            <InfoRow label="Estado:" value={purchase.statePurchase.description}/>
+                            <InfoRow label="Tipo de pago:" value={purchase.typePurchase.description}/>
 
                             {shouldShowModal && (
                                 <button
@@ -71,6 +71,12 @@ export const Collapse = ( props : { purchase: Purchase, index : number }) => {
                                 </button>
                             )}
                         </div>
+                        <button
+                            onClick={() => window.location.href= '/detalle-compra/'+purchase.id}
+                            className="bg-[#FFDEAFFF] hover:bg-[#C8994AFF] text-black font-semibold px-4 py-2 rounded-lg transition duration-300"
+                        >
+                            Ver detalle
+                        </button>
                     </div>
                 </div>
             </motion.div>

@@ -1,5 +1,5 @@
 export const formatDate = (dateString: string): string => {
-  const [day, month, year] = dateString.split('-');
+  const [year, month, day] = dateString.split('-');
 
   const date = new Date(Number(year), Number(month) - 1, Number(day));
 

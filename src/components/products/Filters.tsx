@@ -8,6 +8,7 @@ import {useModal} from "../Utilities/useModal.tsx";
 import {useFetchSeasons} from "../../functions/useFetchSeasons.tsx";
 
 export const Filters = (props: { setCategories: (categories: Category[]) => void }) => {
+
     const applyFilters = (filteredCategories: Category[]) => {
         props.setCategories(filteredCategories);
     };
@@ -86,13 +87,13 @@ export const Filters = (props: { setCategories: (categories: Category[]) => void
                         {error && <p className={'block text-black text-center'}>{error}</p>}
                     </div>
                     <button
-                        className="btn bg-[#5C4033] hover:bg-[#7D4E30] text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200"
+                        className="btn bg-[#5C4033] hover:bg-[#C8994AFF] hover:text-black text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200"
                     >
                         Buscar
                     </button>
                 </form>
                 <button
-                    className="btn bg-[#5C4033] hover:bg-[#7D4E30] text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200"
+                    className="btn bg-[#5C4033] hover:bg-[#C8994AFF] hover:text-black text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200"
                     onClick={() => setIsOpen(true)}
                 >
                     Más filtros
@@ -139,7 +140,7 @@ export const Filters = (props: { setCategories: (categories: Category[]) => void
                             </div>
                             <div>
                                 <label className="block mb-2 text-lg font-medium text-white">Tipo</label>
-                                <div className="grid lg:grid-cols-4 grid-cols-2 lg:gap-y-0 gap-y-4">
+                                <div className="grid lg:grid-cols-6 grid-cols-2 lg:gap-y-0 gap-y-4">
                                     {types.map((t) => (
                                         <label key={t.id} className="flex items-center gap-2">
                                             <input

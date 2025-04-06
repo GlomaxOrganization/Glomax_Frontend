@@ -73,7 +73,7 @@ export const VarietyOfProducts = () => {
                 <div className="flex justify-center lg:justify-start">
                     <motion.a
                         href="/productos"
-                        className="bg-[#5C4033] hover:bg-[#a86b00] text-white font-semibold px-6 py-3 rounded-lg"
+                        className="bg-[#5C4033] hover:bg-[#C8994AFF] hover:text-black text-white font-semibold px-6 py-3 rounded-lg"
                         initial={{opacity: 0, x: 50}}
                         whileInView={{opacity: 1, x: 0}}
                         transition={{duration: 1, delay: 0.9}}

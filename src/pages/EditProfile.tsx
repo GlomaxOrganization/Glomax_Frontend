@@ -64,7 +64,7 @@ export const EditProfile = () => {
 
     return (
         <>
-            <Header />
+            <Header userObtained={user} />
             <div className="container mx-auto min-h-[87.9vh]">
                 <h1 className="text-4xl font-extrabold text-center text-[#5C4033] my-10">Editar Perfil</h1>
                 <form onSubmit={editProfile} className="grid grid-cols-3 gap-y-10 bg-[#5C4033] text-white rounded-xl p-10">

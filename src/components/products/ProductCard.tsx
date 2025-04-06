@@ -7,7 +7,7 @@ export const ProductCard = (props: { category: Category }) => {
     return (
         <div className="relative mx-auto w-full max-w-sm overflow-hidden rounded-xl border border-black shadow-lg transition hover:shadow-xl bg-[#5C4033]">
             <a href={`/productDetail/${category.id}`}>
-                <ImageCarousel image={category.images[0]} />
+                { category.images.length > 0 && <ImageCarousel image={category.images[0]} /> }
             </a>
 
             <div className="p-4 grid gap-4">
@@ -26,7 +26,7 @@ export const ProductCard = (props: { category: Category }) => {
 
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-wrap gap-2">
-                        {category.sizes.reverse().map((size, index) => (
+                        {category.sizes.map((size, index) => (
                             <div
                                 key={index}
                                 className="rounded-full border border-white px-4 py-1 text-xs font-medium text-white whitespace-nowrap"
@@ -48,8 +48,10 @@ export const ProductCard = (props: { category: Category }) => {
                     </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <span className="text-lg font-bold text-white">${category.price.toFixed(2)}</span>
+                <div className="flex md:flex-row items-center justify-between gap-4">
+                    <span className="text-lg font-bold text-white">
+                                ${((category.price + category.price * 10 / 100).toFixed(2))}
+                    </span>
                     <a
                         href={`/productDetail/${category.id}`}
                         className="bg-[#FFDEAFFF] hover:bg-[#C8994AFF] text-black font-semibold px-4 py-2 rounded-lg transition duration-300 text-center"

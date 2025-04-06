@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import {Purchase} from "../types/types";
 
-export const useFetchPurchases = () => {
+export const useFetchPurchasesByUser = () => {
     const [purchases, setPurchases] = useState<Purchase[]>([]);
 
-    const fetchPurchases = async () => {
+    const fetchPurchasesByUser = async () => {
         try {
             const response = await fetch("http://localhost:8080/purchases-by-user", {
                 method: "GET",
@@ -18,7 +18,7 @@ export const useFetchPurchases = () => {
     };
 
     useEffect(() => {
-        fetchPurchases().then(r => {
+        fetchPurchasesByUser().then(r => {
             setPurchases(r as Purchase[]);
         } )
     },[])

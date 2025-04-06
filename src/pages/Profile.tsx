@@ -1,20 +1,31 @@
 import { Header } from "../components/General/Header.tsx";
 import { useFetchUser } from "../functions/useFetchUser.tsx";
 import { Collapse } from "../components/Cart/Collapse.tsx";
-import { useFetchPurchases } from "../functions/useFetchPurchases.tsx";
+import { useFetchPurchasesByUser } from "../functions/useFetchPurchasesByUser.tsx";
+import { motion } from "framer-motion";
 
 export const Profile = () => {
     const user = useFetchUser();
-    const purchases = useFetchPurchases();
+    const purchases = useFetchPurchasesByUser();
+
+    const fadeIn = {
+        hidden: { opacity: 0, y: 50 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+    };
 
     return (
         <>
-            <Header />
-            <div className="container mx-auto px-4 py-8 min-h-[92.4vh]">
-                <h1 className="text-4xl font-extrabold text-center text-[#5C4033] mb-10">Carrito de Compras</h1>
+            <Header userObtained={user} />
+            <motion.div
+                className="container mx-auto px-4 py-8 min-h-[92.4vh]"
+                initial="hidden"
+                animate="visible"
+                variants={fadeIn}
+            >
+                <h1 className="text-4xl font-extrabold text-center text-[#5C4033] mb-10">Perfil</h1>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-x-10 gap-y-8">
-                    <div className="flex flex-col gap-8">
-                        <div className="bg-[#5C4033] text-white rounded-xl shadow-lg p-6 sticky top-20 h-fit">
+                    <motion.div className="flex flex-col gap-8" variants={fadeIn}>
+                        <motion.div className="bg-[#5C4033] text-white rounded-xl shadow-lg p-6 sticky top-20 h-fit" variants={fadeIn}>
                             <div className="flex justify-between items-start">
                                 <h2 className="text-2xl font-bold mb-4">Mis datos</h2>
                                 <a href="/editar-perfil">
@@ -37,9 +48,9 @@ export const Profile = () => {
                                 <p className="text-lg">Celular:</p>
                                 <p className="text-lg font-bold break-all">{user?.phoneNumber}</p>
                             </div>
-                        </div>
+                        </motion.div>
 
-                        <div className="bg-[#5C4033] text-white rounded-xl shadow-lg p-6 sticky top-20 h-fit">
+                        <motion.div className="bg-[#5C4033] text-white rounded-xl shadow-lg p-6 sticky top-20 h-fit" variants={fadeIn}>
                             <div className="flex justify-between items-start">
                                 <h2 className="text-2xl font-bold mb-4">Mi dirección</h2>
                                 <a href="/editar-perfil">
@@ -62,15 +73,16 @@ export const Profile = () => {
                                 <p className="text-lg">País:</p>
                                 <p className="text-lg font-bold break-all">{user?.country}</p>
                             </div>
-                        </div>
-                    </div>
-                    <div className="bg-[#5C4033] text-white rounded-xl shadow-lg p-6 h-fit col-span-1 lg:col-span-2 flex flex-col gap-y-6">
+                        </motion.div>
+                    </motion.div>
+
+                    <motion.div className="bg-[#5C4033] text-white rounded-xl shadow-lg p-6 h-fit col-span-1 lg:col-span-2 flex flex-col gap-y-6" variants={fadeIn}>
                         <h2 className="text-2xl font-bold">Mis compras</h2>
                         {purchases.length > 0 ? (
                             purchases.map((purchase, index) => (
-                                <div className="flex flex-col gap-8" key={index}>
-                                    <Collapse key={index} purchase={purchase} index={index} />
-                                </div>
+                                <motion.div className="flex flex-col gap-8" key={index} variants={fadeIn}>
+                                    <Collapse key={index} purchase={purchase} index={index} user={user} />
+                                </motion.div>
                             ))
                         ) : (
                             <p className="col-span-full text-center text-white font-semibold text-2xl">
@@ -83,9 +95,9 @@ export const Profile = () => {
                         >
                             Comprar
                         </a>
-                    </div>
+                    </motion.div>
                 </div>
-            </div>
+            </motion.div>
         </>
     );
 };

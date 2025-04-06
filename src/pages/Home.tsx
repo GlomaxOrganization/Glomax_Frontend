@@ -6,7 +6,7 @@ import {ShippingType} from "../components/home/ShippingType.tsx";
 export const Home = () => {
     return (
         <>
-            <Header />
+            <Header userObtained={null} />
             <Hero />
             <VarietyOfProducts />
             <ShippingType />

@@ -81,7 +81,19 @@ export type Purchase = {
     typePurchase : TypePurchase;
     statePurchase : StatePurchase;
     createdAt : string;
+    trackingCode : string;
     image : Image;
     title : string;
     shippingCost : number;
+    clientName : string;
+    items : ItemCart[];
 }
+
+export type Filter = {
+    statePurchase?: number;
+    id?: number;
+    client?: string;
+    dateFrom: string;
+    dateUntil: string;
+    typePurchase?: number;
+};

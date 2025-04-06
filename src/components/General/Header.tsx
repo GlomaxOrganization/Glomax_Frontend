@@ -1,11 +1,13 @@
 import {useFetchUser} from "../../functions/useFetchUser.tsx";
+import {User} from "../../types/types.ts";
 
-export const Header = () => {
+export const Header = (props :{userObtained: User | null }) => {
     const cart = JSON.parse(localStorage.getItem("cart") || "[]") as unknown[];
 
     const amount = cart.length;
 
-    const user= useFetchUser();
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const user= props.userObtained ?? useFetchUser();
 
     const login = () => {
         window.location.href = "http://localhost:8080/oauth2/authorization/google";
@@ -47,7 +49,7 @@ export const Header = () => {
                         </div>
                     </a>
 
-                    <div className="dropdown dropdown-end ">
+                    <div className="dropdown dropdown-end z-20 ">
                         {user ?
                             <>
                                 <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
@@ -70,6 +72,13 @@ export const Header = () => {
                                             Mis compras
                                         </a>
                                     </li>
+                                    {user.id == 1 &&
+                                        <li>
+                                            <a href={"/ventas"} className="rounded-lg px-4 py-2 text-l">
+                                                Ventas
+                                            </a>
+                                        </li>
+                                    }
                                     <li>
                                         <button onClick={logout} className="rounded-lg px-4 py-2 text-l">
                                             Cerrar sesión
@@ -99,11 +108,16 @@ export const Header = () => {
                     </div>
                 </div>
             </div>
-            <nav className="grid grid-cols-3 py-3 shadow-lg text-white text-lg font-semibold text-center">
+            <nav className="grid grid-cols-3 py-3 shadow-lg text-white text-xl font-semibold text-center">
                 <a href={'/envios'}>Envíos</a>
                 <a href={'/productos'}>Productos</a>
-                <a href={'contacto'}>Contacto</a>
+                <a href={'/contacto'}>Contacto</a>
             </nav>
+            <div className="py-2 bg-[#C8994AFF]">
+                <p className={'md:text-lg text-black md:font-semibold text-center'}>
+                    ¡Envío gratis en compras superiores a $35.000! | 10% de descuento en todos los productos pagando con transferencia.
+                </p>
+            </div>
         </header>
     );
 };

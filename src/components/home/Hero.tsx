@@ -44,7 +44,7 @@ export const Hero = () => {
 
             <motion.img
                 alt="Image Hero"
-                src="https://i.imgur.com/9mSCFxO.png"
+                src="https://i.imgur.com/Vokvf7e.png"
                 className="w-full max-w-[220px] md:max-w-[300px] lg:max-w-[400px] xl:max-w-[450px] mb-12 lg:mb-0 rounded-lg shadow-2xl"
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}

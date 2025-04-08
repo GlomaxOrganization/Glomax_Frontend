@@ -3,7 +3,7 @@ import { useFetchUser } from "../functions/useFetchUser.tsx";
 import { useState, useEffect } from "react";
 
 export const EditProfile = () => {
-    const user = useFetchUser();
+    const user = useFetchUser(true);
     const [name, setName] = useState<string>("");
     const [document, setDocument] = useState<string>("");
     const [phoneNumber, setPhoneNumber] = useState<string>("");

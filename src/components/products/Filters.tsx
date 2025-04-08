@@ -140,7 +140,7 @@ export const Filters = (props: { setCategories: (categories: Category[]) => void
                             </div>
                             <div>
                                 <label className="block mb-2 text-lg font-medium text-white">Tipo</label>
-                                <div className="grid lg:grid-cols-6 grid-cols-2 lg:gap-y-0 gap-y-4">
+                                <div className="grid lg:grid-cols-4 grid-cols-2 gap-y-4">
                                     {types.map((t) => (
                                         <label key={t.id} className="flex items-center gap-2">
                                             <input

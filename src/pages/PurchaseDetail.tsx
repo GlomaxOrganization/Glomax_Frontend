@@ -8,7 +8,7 @@ export const PurchaseDetail = () => {
     const { id } = useParams();
     const purchase = useFetchPurchaseById(id);
     const [error, setError] = useState<string | null>(null);
-    const user = useFetchUser();
+    const user = useFetchUser(true);
 
     useEffect(() => {
         if (!purchase) {

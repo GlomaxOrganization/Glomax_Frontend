@@ -100,7 +100,6 @@ export const Detail = ({ category }: { category: Category | null }) => {
 
                         <div className="grid gap-6">
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                {/* Talles */}
                                 <div className="flex flex-col">
                                     <label className="block mb-2 text-lg font-medium text-black">
                                         Talles

@@ -7,7 +7,7 @@ import {useFetchUser} from "../functions/useFetchUser.tsx";
 
 export const Sales = () => {
     const [filtered, setFiltered] = useState<boolean>(false)
-    const user= useFetchUser();
+    const user= useFetchUser(true);
 
     const [filters, setFilters] = useState<Filter>({
         statePurchase: 0 as number | undefined,

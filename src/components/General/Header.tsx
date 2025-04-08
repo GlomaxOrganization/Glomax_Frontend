@@ -1,13 +1,19 @@
 import {useFetchUser} from "../../functions/useFetchUser.tsx";
 import {User} from "../../types/types.ts";
+import {useEffect, useState} from "react";
 
 export const Header = (props :{userObtained: User | null }) => {
     const cart = JSON.parse(localStorage.getItem("cart") || "[]") as unknown[];
 
-    const amount = cart.length;
+    const [amount, setAmount] = useState(0);
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const user= props.userObtained ?? useFetchUser();
+    useEffect(() => {
+        setAmount(cart.length)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[localStorage.getItem("cart")])
+
+    const fetchedUser = useFetchUser(!props.userObtained);
+    const user = props.userObtained ?? fetchedUser;
 
     const login = () => {
         window.location.href = "http://localhost:8080/oauth2/authorization/google";

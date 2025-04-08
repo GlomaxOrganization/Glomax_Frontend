@@ -1,6 +1,6 @@
 import { Header } from "../components/General/Header.tsx";
 import { ItemCart } from "../types/types.ts";
-import { useState, useEffect } from "react";
+import {useState, useEffect, useCallback} from "react";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import axios from "axios";
 import { useFetchUser } from "../functions/useFetchUser.tsx";
@@ -8,36 +8,37 @@ import { useFetchTypesPurchase } from "../functions/useFetchTypesPurchase.tsx";
 import {AnimatePresence, motion} from "framer-motion";
 
 export const Cart = () => {
-    initMercadoPago(`${import.meta.env.VITE_MERCADO_PAGO_TOKEN}`, { locale: "es-AR" });
-
     const [cart, setCart] = useState<ItemCart[]>([]);
-    const [typePurchaseSelected, setTypePurchaseSelected] = useState<number>(1);
+    const [typePurchaseSelected, setTypePurchaseSelected] = useState(1);
     const [preferenceId, setPreferenceId] = useState<string | null>(null);
-    const [error, setError] = useState<string>("");
-    const user = useFetchUser();
+    const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
+    const user = useFetchUser(true);
     const typesPurchase = useFetchTypesPurchase();
 
-    sessionStorage.removeItem("modalShown");
-
     useEffect(() => {
+        initMercadoPago(import.meta.env.VITE_MERCADO_PAGO_TOKEN, { locale: "es-AR" });
+        sessionStorage.removeItem("modalShown");
+
         const storedCart = JSON.parse(localStorage.getItem("cart") || "[]") as ItemCart[];
         setCart(storedCart);
     }, []);
 
-    const updateCart = (newCart: ItemCart[]) => {
+    const updateCart = useCallback((newCart: ItemCart[]) => {
         setCart(newCart);
         localStorage.setItem("cart", JSON.stringify(newCart));
-    };
+    }, []);
 
-    const handleRemoveItem = (index: number) => {
+    const handleRemoveItem = useCallback((index: number) => {
         updateCart(cart.filter((_, i) => i !== index));
-    };
+    }, [cart, updateCart]);
 
-    const handleAmountChange = (index: number, delta: number) => {
+    const handleAmountChange = useCallback((index: number, delta: number) => {
         const updatedCart = [...cart];
         updatedCart[index].amount = Math.max(1, updatedCart[index].amount + delta);
         updateCart(updatedCart);
-    };
+    }, [cart, updateCart]);
 
     const createPreference = async () => {
         try {
@@ -48,6 +49,9 @@ export const Cart = () => {
             return data;
         } catch (error) {
             console.error("Error al crear la preferencia:", error);
+            setError("No se pudo iniciar el pago con Mercado Pago.");
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -61,23 +65,17 @@ export const Cart = () => {
             if (response.status === 200) {
                 window.location.href = "/perfil";
             }
-        } catch (error) {
-            if (
+        } catch (err) {
+            const message =
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                //@ts-expect-error
-                error.response) {
-                setError(
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    //@ts-expect-error
-                    error.response.data);
-            } else {
-                setError("Error de conexión con el servidor");
-            }
+                // @ts-expect-error
+                err?.response?.data || "Error de conexión con el servidor";
+            setError(message);
         }
     };
 
-
     const handleBuy = async () => {
+        setIsLoading(true);
         const id = await createPreference();
         if (id) setPreferenceId(id);
     };
@@ -89,16 +87,32 @@ export const Cart = () => {
         typePurchaseSelected === 2 ? handleBuy() : handleTransfer();
     };
 
-    const totalItems = cart.reduce((total, item) => total + item.amount, 0);
+    const totalItems = cart.reduce((sum, item) => sum + item.amount, 0);
+    const isTransfer = typePurchaseSelected === 1;
 
-    const totalPriceWithoutShipping = cart.reduce((total, item) => total + item.amount * item.product.category.price, 0);
+    const totalPriceWithoutShipping = cart.reduce((sum, item) => {
+        const basePrice = item.product.category.price;
+        const price = isTransfer ? basePrice : basePrice * 1.1;
+        return sum + item.amount * price;
+    }, 0);
 
-    const shippingCost = totalPriceWithoutShipping >= 35000 ? 0 : 8000;
+
+    const priceWithType =
+        typePurchaseSelected === 1
+            ? totalPriceWithoutShipping
+            : totalPriceWithoutShipping * 1.10;
+
+    const shippingCost = priceWithType >= 35000 ? 0 : 8000;
 
     const totalPrice = totalPriceWithoutShipping + shippingCost;
 
     const cardVariants = {
         hidden: { opacity: 0, y: 50 },
+        visible: (index: number) => ({
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.5, delay: index * 0.4 },
+        }),
         exit: { opacity: 0, scale: 0.9 },
     };
 
@@ -117,10 +131,10 @@ export const Cart = () => {
 
                 {cart.length > 0 ? (
                     <motion.div
-                        initial={{ opacity: 0, y: 50 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 50 }}
-                        transition={{ duration: 0.5 }}
+                        initial={{opacity: 0, y: 50}}
+                        animate={{opacity: 1, y: 0}}
+                        exit={{opacity: 0, y: 50}}
+                        transition={{duration: 0.5}}
                         className="grid grid-cols-1 lg:grid-cols-3 gap-8"
                     >
                         <div className="lg:col-span-2 flex flex-col gap-y-6">
@@ -173,7 +187,8 @@ export const Cart = () => {
                                                 </motion.div>
 
                                                 <p className="text-white font-bold mt-4">
-                                                    Total: ${typePurchaseSelected == 1 ? (item.amount * item.product.category.price).toFixed(2) : (item.amount * item.product.category.price + item.product.category.price * 10 / 100).toFixed(2)}
+                                                    Total:
+                                                    ${typePurchaseSelected == 1 ? (item.amount * item.product.category.price).toFixed(2) : (item.amount * (item.product.category.price + item.product.category.price * 10 / 100)).toFixed(2)}
                                                 </p>
 
                                                 <motion.button
@@ -189,7 +204,7 @@ export const Cart = () => {
                                     ))}
                                 </AnimatePresence>
                             </div>
-                            <motion.a href={'/products'} whileHover={{scale: 1.05}}>
+                            <motion.a href={'/productos'} whileHover={{scale: 1.05}}>
                                 <button
                                     className="w-full bg-[#5C4033] hover:bg-[#C8994AFF] hover:text-black text-white font-semibold py-2 rounded-lg">
                                     Seguir comprando
@@ -198,65 +213,105 @@ export const Cart = () => {
                         </div>
 
                         <motion.div
-                            className="bg-[#5C4033] text-white p-6 rounded-xl h-fit sticky top-20 mb-10"
-                            initial={{ opacity: 0, x: 100 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.5, delay: 0.2 }}
+                            className="bg-[#5C4033] text-white p-6 rounded-xl h-fit sticky top-20 mb-10 shadow-xl"
+                            initial={{opacity: 0, x: 100}}
+                            animate={{opacity: 1, x: 0}}
+                            transition={{duration: 0.5, delay: 0.2}}
                         >
-                            <h2 className="text-2xl font-bold mb-6">Resumen de Compra</h2>
-                            <div className="flex justify-between items-center mb-4">
-                                <p className="text-lg">Productos:</p>
-                                <p className="text-lg font-bold break-all">{totalItems}</p>
+                            <h2 className="text-2xl font-bold mb-4 text-center">🧾 Resumen de compra</h2>
+
+                            <div className="space-y-4 text-lg">
+                                <div className="flex justify-between">
+                                    <span>Productos:</span>
+                                    <span className="font-semibold">{totalItems}</span>
+                                </div>
+
+                                <div className="flex justify-between">
+                                    <span>Costo de envío:</span>
+                                    <span className="font-semibold">${shippingCost.toLocaleString()}</span>
+                                </div>
+
+                                {typePurchaseSelected === 1 && (
+                                    <div className="flex justify-between">
+                                        <span>Descuento por transferencia:</span>
+                                        <span className="font-semibold">10%</span>
+                                    </div>
+                                )}
+
+                                <hr className="border-white/30 my-2"/>
+
+                                <div className="flex justify-between text-xl font-bold">
+                                    <span>Total:</span>
+                                    <span>
+        $
+                                        {(typePurchaseSelected === 1
+                                                ? totalPrice
+                                                : totalPrice
+                                        ).toFixed(2)}
+      </span>
+                                </div>
                             </div>
 
-                            <div className="flex justify-between items-center mb-4">
-                                <p className="text-lg">Costo de envío:</p>
-                                <p className="text-lg font-bold break-all">${shippingCost}</p>
+                            <div className="mt-6">
+                                <label className="block mb-2 font-semibold text-white">Medio de pago</label>
+                                <motion.select
+                                    onChange={(e) => setTypePurchaseSelected(Number(e.target.value))}
+                                    className="select select-bordered bg-[#FFDEAFFF] text-black w-full"
+                                    whileHover={{scale: 1.02}}
+                                >
+                                    {typesPurchase.map((t) => (
+                                        <option key={t.id} value={t.id}>{t.description}</option>
+                                    ))}
+                                </motion.select>
                             </div>
-
-                            <div className="flex justify-between items-center mb-4">
-                                <p className="text-lg">Descuento:</p>
-                                <p className="text-lg font-bold break-all">{typePurchaseSelected == 1 ? '10%' : '0%'}</p>
-                            </div>
-
-                            <div className="flex justify-between items-center mb-4">
-                                <p className="text-lg">Total:</p>
-                                <p className="text-lg font-bold break-all">${typePurchaseSelected == 1 ? totalPrice.toFixed(2) : (totalPrice + totalPriceWithoutShipping * 10 / 100).toFixed(2)}</p>
-                            </div>
-
-                            <p className="text-lg font-bold break-all mb-1">Medio de pago</p>
-                            <motion.select
-                                onChange={(e) => setTypePurchaseSelected(Number(e.target.value))}
-                                className="select select-bordered bg-[#FFDEAFFF] text-black w-full mb-4"
-                                whileHover={{ scale: 1.02 }}
-                            >
-                                {typesPurchase.map((t) => (
-                                    <option key={t.id} value={t.id}>{t.description}</option>
-                                ))}
-                            </motion.select>
 
                             <motion.button
                                 onClick={handlePurchase}
-                                className="w-full bg-[#FFDEAFFF] hover:bg-[#C8994AFF] text-black font-semibold py-2 rounded-lg"
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
+                                className="mt-6 w-full bg-[#FFDEAFFF] hover:bg-[#C8994AFF] text-black font-semibold py-2 rounded-lg"
+                                whileHover={{scale: 1.05}}
+                                whileTap={{scale: 0.95}}
                             >
                                 Finalizar Compra
                             </motion.button>
 
                             {error && <p className="text-white text-center text-lg mt-4">{error}</p>}
-                            {preferenceId && <Wallet initialization={{preferenceId}} customization={{texts: {valueProp: "smart_option"}}}/>}
+
+                            {isLoading ? (
+                                <div className="flex items-center justify-center mt-6">
+                                    <span className="loading loading-spinner text-[#FFDEAFFF]"></span>
+                                </div>
+                            ) : (
+                                preferenceId && (
+                                    <div className="mt-6">
+                                        <Wallet
+                                            initialization={{preferenceId}}
+                                            customization={{texts: {valueProp: "smart_option"}}}
+                                        />
+                                    </div>
+                                )
+                            )}
                         </motion.div>
+
                     </motion.div>
                 ) : (
-                    <motion.p
-                        className="text-center text-gray-600 text-xl"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5 }}
-                    >
-                        🛍️ Tu carrito está vacío. Agrega productos para comenzar.
-                    </motion.p>
+                    <div>
+                        <motion.p
+                            className="text-center text-gray-600 text-xl"
+                            initial={{opacity: 0}}
+                            animate={{opacity: 1}}
+                            transition={{duration: 0.5}}
+                        >
+                            🛍️ Tu carrito está vacío. Agrega productos para comenzar.
+                        </motion.p>
+
+                        <motion.a href={'/productos'} whileHover={{scale: 1.05}}>
+                            <button
+                                className="w-full bg-[#5C4033] hover:bg-[#C8994AFF] hover:text-black text-white font-semibold py-2 rounded-lg mt-10">
+                                ¡Comenzar a comprar!
+                            </button>
+                        </motion.a>
+                    </div>
+
                 )}
 
             </div>

@@ -1,7 +1,7 @@
-import {useEffect, useState} from "react";
-import {User} from "../types/types.ts";
+import { useEffect, useState } from "react";
+import { User } from "../types/types.ts";
 
-export const useFetchUser = () => {
+export const useFetchUser = (shouldFetch : boolean) => {
     const [user, setUser] = useState<User | null>(null);
 
     const fetchUser = async () => {
@@ -13,13 +13,13 @@ export const useFetchUser = () => {
 
             if (!response.ok) return;
 
-            const text = await response.text(); // Lee la respuesta como texto
-            if (!text){
+            const text = await response.text();
+            if (!text) {
                 localStorage.removeItem("user");
                 return null;
-            } // Si está vacía, retorna null
+            }
 
-            return JSON.parse(text); // Parsea solo si hay contenido
+            return JSON.parse(text);
         } catch (error) {
             console.error("Fetch user failed:", error);
             return null;
@@ -27,13 +27,15 @@ export const useFetchUser = () => {
     };
 
     useEffect(() => {
+        if (!shouldFetch) return;
+
         fetchUser().then(userData => {
             if (userData) {
                 setUser(userData);
                 localStorage.setItem("user", JSON.stringify(userData));
             }
         });
-    }, []);
+    }, [shouldFetch]);
 
     return user;
 };

@@ -5,7 +5,7 @@ import { useFetchPurchasesByUser } from "../functions/useFetchPurchasesByUser.ts
 import { motion } from "framer-motion";
 
 export const Profile = () => {
-    const user = useFetchUser();
+    const user = useFetchUser(true);
     const purchases = useFetchPurchasesByUser();
 
     const fadeIn = {

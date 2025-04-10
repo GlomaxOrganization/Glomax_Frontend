@@ -45,7 +45,7 @@ export const Filters = (props: { setCategories: (categories: Category[]) => void
         }
 
         try {
-            const response = await fetch(`http://localhost:8080/categoriesFiltered`, {
+            const response = await fetch(`https://glomaxbackend.up.railway.app/categoriesFiltered`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

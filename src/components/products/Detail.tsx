@@ -59,6 +59,7 @@ export const Detail = ({ category }: { category: Category | null }) => {
             }
 
             const newProduct: ItemCart = {
+                id: product.id,
                 product,
                 amount: amountSelected,
             };

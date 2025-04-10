@@ -6,7 +6,7 @@ export const useFetchSizes = () => {
 
     const fetchSizes = async () => {
         try {
-            const response = await fetch("http://localhost:8080/sizes", {
+            const response = await fetch("https://glomaxbackend.up.railway.app/sizes", {
                 method: "GET",
                 credentials: "include",
             });

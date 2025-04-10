@@ -33,7 +33,7 @@ export const EditProfile = () => {
         console.log('Nombre -> ' + name);
 
         try {
-            const response = await fetch(`http://localhost:8080/edit-profile`, {
+            const response = await fetch(`https://glomaxbackend.up.railway.app/edit-profile`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

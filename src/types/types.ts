@@ -57,6 +57,7 @@ export type Category = {
 }
 
 export type Product = {
+    id: number;
     category : Category;
     size : Size;
     color : Color;
@@ -78,6 +79,7 @@ export type User = {
 }
 
 export type ItemCart = {
+    id: number;
     product: Product;
     amount : number;
 }

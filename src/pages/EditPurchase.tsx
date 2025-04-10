@@ -30,7 +30,7 @@ export const EditPurchase = () => {
     const editSale = async () => {
         try {
             const response = await axios.post(
-                "http://localhost:8080/edit-purchase",
+                "https://glomaxbackend.up.railway.app/edit-purchase",
                 {
                     statePurchase,
                     trackingCode,

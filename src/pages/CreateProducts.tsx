@@ -36,7 +36,7 @@ export const CreateProducts = () => {
         };
 
         try {
-            const response = await fetch("http://localhost:8080/create-products", {
+            const response = await fetch("https://glomaxbackend.up.railway.app/create-products", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

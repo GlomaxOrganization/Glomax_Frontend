@@ -6,7 +6,7 @@ export const useFetchColors = () => {
 
     const fetchColors = async () => {
         try {
-            const response = await fetch("http://localhost:8080/colors", {
+            const response = await fetch("https://glomaxbackend.up.railway.app/colors", {
                 method: "GET",
                 credentials: "include",
             });

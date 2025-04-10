@@ -20,8 +20,8 @@ export function addToCartLocalStorage(props: {
     const existingProductIndex = cart.findIndex(
         (item) =>
             item.id === product.id &&
-            item.size.id === sizeSelected &&
-            item.color.id === colorSelected
+            item.product.size.id === sizeSelected &&
+            item.product.color.id === colorSelected
     );
 
     if (existingProductIndex !== -1) {
@@ -37,9 +37,7 @@ export function addToCartLocalStorage(props: {
 
         const newProduct: ItemCart = {
             id: product.id,
-            category: product.category,
-            size,
-            color,
+            product: product,
             amount: amountSelected,
         };
 

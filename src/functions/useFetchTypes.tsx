@@ -6,7 +6,7 @@ export const useFetchTypes = () => {
 
     const fetchType = async () => {
         try {
-            const response = await fetch("http://localhost:8080/types", {
+            const response = await fetch("https://glomaxbackend.up.railway.app/types", {
                 method: "GET",
                 credentials: "include",
             });

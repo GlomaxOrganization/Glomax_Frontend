@@ -42,7 +42,7 @@ export const Cart = () => {
 
     const createPreference = async () => {
         try {
-            const { data } = await axios.post("http://localhost:8080/create-preference", cart, {
+            const { data } = await axios.post("https://glomaxbackend.up.railway.app/create-preference", cart, {
                 withCredentials: true,
                 headers: { "Content-Type": "application/json" },
             });
@@ -57,7 +57,7 @@ export const Cart = () => {
 
     const handleTransfer = async () => {
         try {
-            const response = await axios.post("http://localhost:8080/handle-transfer", cart, {
+            const response = await axios.post("https://glomaxbackend.up.railway.app/handle-transfer", cart, {
                 withCredentials: true,
                 headers: { "Content-Type": "application/json" },
             });

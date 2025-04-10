@@ -6,7 +6,7 @@ export const useFetchTypesPurchase = () => {
 
     const fetchTypesPurchase = async () => {
         try {
-            const response = await fetch("http://localhost:8080/typesPurchase", {
+            const response = await fetch("https://glomaxbackend.up.railway.app/typesPurchase", {
                 method: "GET",
                 credentials: "include",
             });

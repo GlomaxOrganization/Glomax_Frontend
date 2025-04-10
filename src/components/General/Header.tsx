@@ -16,11 +16,11 @@ export const Header = (props :{userObtained: User | null }) => {
     const user = props.userObtained ?? fetchedUser;
 
     const login = () => {
-        window.location.href = "http://localhost:8080/oauth2/authorization/google";
+        window.location.href = "https://glomaxbackend.up.railway.app/oauth2/authorization/google";
     };
 
     const logout = () => {
-        window.location.href = "http://localhost:8080/logout";
+        window.location.href = "https://glomaxbackend.up.railway.app/logout";
     };
 
     return (

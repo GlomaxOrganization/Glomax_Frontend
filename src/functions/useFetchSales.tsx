@@ -8,7 +8,7 @@ export const useFetchSales = (data: Filter, filtered: boolean) => {
 
     const fetchPurchases = async () => {
         try {
-            const response = await fetch("http://localhost:8080/purchases", {
+            const response = await fetch("https://glomaxbackend.up.railway.app/purchases", {
                 method: "POST",
                 body: JSON.stringify(data),
                 headers: {

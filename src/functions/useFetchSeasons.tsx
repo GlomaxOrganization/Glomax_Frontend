@@ -6,7 +6,7 @@ export const useFetchSeasons = () => {
 
     const fetchSeasons = async () => {
         try {
-            const response = await fetch("http://localhost:8080/seasons", {
+            const response = await fetch("https://glomaxbackend.up.railway.app/seasons", {
                 method: "GET",
                 credentials: "include",
             });

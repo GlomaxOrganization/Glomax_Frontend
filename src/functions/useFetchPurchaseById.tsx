@@ -6,7 +6,7 @@ export const useFetchPurchaseById = (id: string | undefined) => {
 
     const fetchPurchase = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/getPurchaseById?id=${id}`, {
+            const response = await fetch(`https://glomaxbackend.up.railway.app/getPurchaseById?id=${id}`, {
                 method: "GET",
                 credentials: "include",
             });

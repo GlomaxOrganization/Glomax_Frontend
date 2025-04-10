@@ -6,7 +6,7 @@ export const useFetchCategories = (index : number) => {
 
     const fetchCategories = async () => {
         try {
-            const response = await fetch("http://localhost:8080/categories?index="+index, {
+            const response = await fetch("https://glomaxbackend.up.railway.app/categories?index="+index, {
                 method: "GET",
                 credentials: "include",
             });

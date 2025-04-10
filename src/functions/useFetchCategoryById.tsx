@@ -6,7 +6,7 @@ export const useFetchCategoryById = (id: string | undefined) => {
 
     const fetchCategory = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/getCategoryById?id=${id}`, {
+            const response = await fetch(`https://glomaxbackend.up.railway.app/getCategoryById?id=${id}`, {
                 method: "GET",
                 credentials: "include",
             });

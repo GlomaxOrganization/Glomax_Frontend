@@ -6,7 +6,7 @@ export const useFetchUser = (shouldFetch : boolean) => {
 
     const fetchUser = async () => {
         try {
-            const response = await fetch("http://localhost:8080/user", {
+            const response = await fetch("https://glomaxbackend.up.railway.app/user", {
                 method: "GET",
                 credentials: "include",
             });

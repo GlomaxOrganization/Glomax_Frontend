@@ -16,7 +16,7 @@ export const ShippingType = () => {
 
     return (
         <div
-            className="container min-h-screen mx-auto px-4 sm:px-8 flex flex-col-reverse lg:flex-row items-center justify-between">
+            className="container min-h-screen mx-auto px-4 sm:px-8 flex flex-col lg:flex-row items-center md:justify-between md:gap-0 gap-24 md:mt-0 mt-24">
             <motion.div
                 className="flex flex-col gap-8 lg:gap-12 text-center lg:text-left"
                 initial={{opacity: 0, y: -50}}
@@ -40,8 +40,8 @@ export const ShippingType = () => {
                 >
                     Realizamos la mayoría de nuestros envíos a través de Correo Argentino, <br/>
                     garantizando seguridad y cobertura en {"todo"} el territorio.
-                    Si vivís en zonas seleccionadas, <br/>
-                    también ofrecemos la opción de envío Flex para que recibas tu compra de manera más rápida.
+                    Si vivís en Buenos Aires o CABA, <br/>
+                    también ofrecemos la opción de Envío Express para que recibas tu compra de manera más rápida.
                 </motion.p>
 
                 <div className="flex justify-center lg:justify-start">

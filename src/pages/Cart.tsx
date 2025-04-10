@@ -218,7 +218,7 @@ export const Cart = () => {
                             animate={{opacity: 1, x: 0}}
                             transition={{duration: 0.5, delay: 0.2}}
                         >
-                            <h2 className="text-2xl font-bold mb-4 text-center">🧾 Resumen de compra</h2>
+                            <h2 className="text-2xl font-bold mb-4 text-center">Resumen de compra</h2>
 
                             <div className="space-y-4 text-lg">
                                 <div className="flex justify-between">
@@ -282,7 +282,7 @@ export const Cart = () => {
                                 </div>
                             ) : (
                                 preferenceId && (
-                                    <div className="mt-6">
+                                    <div className="mt-6 overflow-scroll">
                                         <Wallet
                                             initialization={{preferenceId}}
                                             customization={{texts: {valueProp: "smart_option"}}}

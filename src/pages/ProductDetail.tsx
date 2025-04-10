@@ -72,7 +72,21 @@ export const ProductDetail = () => {
             <Header  userObtained={null}/>
 
             <div className="container mx-auto">
-                <Detail category={category} />
+                <Detail category={category}/>
+
+
+                <div className={'space-y-8 mb-32 md:px-0 px-4'}>
+                    <div className={'flex justify-center mt-10'}>
+                        <h3 className={'font-bold text-4xl'}>Descripción</h3>
+                    </div>
+                    <div className={'flex items-center md:justify-between flex-col md:flex-row md:gap-y-0 gap-y-4'}>
+                        <p className={'font-medium text-xl'}>Tipo de tela: <span
+                            className={'font-normal'}>{category?.typeFabric.description}.</span></p>
+                        <p className={'font-medium text-xl'}>Temporada: <span
+                            className={'font-normal'}>{category?.season.description}.</span></p>
+                    </div>
+                    <p className={'text-xl'}>{category?.description}</p>
+                </div>
 
                 {similarCategories && similarCategories.length > 0 && (
                     <div className="flex flex-col gap-24 pb-20">
@@ -93,7 +107,7 @@ export const ProductDetail = () => {
                                         key={index}
                                         className="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 px-2"
                                     >
-                                        <ProductCard category={category} />
+                                        <ProductCard category={category}/>
                                     </div>
                                 ))}
                             </div>

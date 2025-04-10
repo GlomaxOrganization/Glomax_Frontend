@@ -34,19 +34,19 @@ export const Contact = () => {
                         <h2 className="text-xl md:text-2xl font-bold text-center mb-5">
                             Contacto
                         </h2>
-                        <div className={'grid md:grid-cols-4 grid-cols-2'}>
+                        <div className={'grid md:grid-cols-4 grid-cols-2 md:gap-y-0 gap-y-4'}>
                             <a href={'mailto:paoloaleman86@gmail.com'} target={'_blank'}><img src={'/gmail.svg'}
                                                                                               alt={'Gmail'}
-                                                                                              className={'w-12 mx-auto'}/></a>
+                                                                                              className={'md:w-12 w-10 mx-auto'}/></a>
                             <a href={'https://wa.me/qr/O6PGT4RAMINRM1'} target={'_blank'}><img src={'/whatsapp.svg'}
                                                                                                alt={'Whatsapp'}
-                                                                                               className={'w-12 mx-auto'}/></a>
-                            <a href={'https://www.instagram.com/paolo_2309/'} target={'_blank'}>
-                                <img src={'/instagram.svg'} alt={'Instagram'} className={'w-12 mx-auto'}/>
+                                                                                               className={'md:w-12 w-10 mx-auto'}/></a>
+                            <a href={'https://www.instagram.com/glomax_fashion/'} target={'_blank'}>
+                                <img src={'/instagram.svg'} alt={'Instagram'} className={'md:w-12 w-10 mx-auto'}/>
                             </a>
                             <a href={'https://www.tiktok.com/@rayzal_carp'} target={'_blank'}><img src={'/tiktok.svg'}
                                                                                                    alt={'TikTok'}
-                                                                                                   className={'w-12 mx-auto'}/></a>
+                                                                                                   className={'md:w-12 w-10 mx-auto'}/></a>
                         </div>
                     </motion.div>
 

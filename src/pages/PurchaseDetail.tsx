@@ -35,7 +35,7 @@ export const PurchaseDetail = () => {
                         </button>
                     </div>
                 }
-                <div className="my-20">
+                <div className="my-20 overflow-x-scroll">
                     <table className="border border-black w-full mt-10">
                         <thead>
                         <tr className="border border-black bg-[#5C4033] text-white lg:text-xl text-l font-bold">

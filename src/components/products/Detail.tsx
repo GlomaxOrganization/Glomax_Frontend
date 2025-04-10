@@ -74,7 +74,7 @@ export const Detail = ({ category }: { category: Category | null }) => {
     return (
         <>
             {category && (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 py-10 min-h-[92vh] md:pt-28">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 py-10 min-h-[81vh] md:pt-24">
                     <div className="w-full lg:w-[80%] mx-auto">
                         <ImageGallery images={category.images.filter(image => image.color.id == colorSelected)} />
                     </div>

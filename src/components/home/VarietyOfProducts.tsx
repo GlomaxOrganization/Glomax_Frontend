@@ -15,8 +15,8 @@ export const VarietyOfProducts = () => {
     };
     return (
         <div
-            className="container min-h-[80vh] mx-auto px-4 sm:px-8 flex flex-col-reverse lg:flex-row items-center justify-between">
-            <div className="grid grid-cols-2 gap-4">
+            className="container min-h-[80vh] mx-auto mt-20 md:mt-0 px-4 sm:px-8 flex flex-col-reverse lg:flex-row items-center justify-between">
+            <div className="grid grid-cols-2 gap-4 md:mt-0 mt-10">
                 {[
                     "https://i.imgur.com/v4nhL5n.jpeg",
                     "https://i.imgur.com/P55MRPs.png",

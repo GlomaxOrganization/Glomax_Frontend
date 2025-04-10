@@ -4,6 +4,11 @@ export type Type = {
     image: string;
 }
 
+export type TypeFabric = {
+    id: number;
+    description: string;
+}
+
 export type Season = {
     id: number;
     description: string;
@@ -46,7 +51,9 @@ export type Category = {
     price: number;
     season: Season;
     type: Type;
+    typeFabric: TypeFabric;
     sizeGuide: string;
+    description: string;
 }
 
 export type Product = {

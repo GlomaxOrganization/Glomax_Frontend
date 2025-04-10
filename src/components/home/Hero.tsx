@@ -2,9 +2,9 @@ import { motion } from "framer-motion";
 
 export const Hero = () => {
     return (
-        <div className="container min-h-[80vh] mx-auto px-4 sm:px-8 flex flex-col-reverse lg:flex-row items-center justify-between">
+        <div className="container md:min-h-[80vh] min-h-[85vh] mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
             <motion.div
-                className="flex flex-col gap-8 lg:gap-12 text-center lg:text-left"
+                className="flex flex-col gap-8 lg:gap-12 text-center lg:text-left md:pt-0 pt-14"
                 initial={{ opacity: 0, y: -50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, ease: "easeOut" }}

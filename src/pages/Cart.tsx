@@ -42,7 +42,7 @@ export const Cart = () => {
 
     const createPreference = async () => {
         try {
-            const { data } = await axios.post("import.meta.env.VITE_MERCADO_PAGO_TOKEN/create-preference", cart, {
+            const { data } = await axios.post(import.meta.env.VITE_BACKEND_URL+"/create-preference", cart, {
                 withCredentials: true,
                 headers: { "Content-Type": "application/json" },
             });
@@ -57,7 +57,7 @@ export const Cart = () => {
 
     const handleTransfer = async () => {
         try {
-            const response = await axios.post("import.meta.env.VITE_MERCADO_PAGO_TOKEN/handle-transfer", cart, {
+            const response = await axios.post(import.meta.env.VITE_BACKEND_URL+"/handle-transfer", cart, {
                 withCredentials: true,
                 headers: { "Content-Type": "application/json" },
             });
@@ -102,7 +102,7 @@ export const Cart = () => {
             ? totalPriceWithoutShipping
             : totalPriceWithoutShipping * 1.10;
 
-    const shippingCost = priceWithType >= 35000 ? 0 : 8000;
+    const shippingCost = priceWithType >= 50000 ? 0 : 8000;
 
     const totalPrice = totalPriceWithoutShipping + shippingCost;
 

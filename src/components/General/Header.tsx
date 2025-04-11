@@ -126,7 +126,7 @@ export const Header = (props :{userObtained: User | null }) => {
             </nav>
             <div className="py-2 bg-[#C8994AFF]">
                 <p className={'md:text-lg text-black md:font-semibold text-center'}>
-                    ¡Envío gratis en compras superiores a $35.000! | 10% de descuento en todos los productos pagando con transferencia.
+                    ¡Envío gratis en compras superiores a $50.000! | 10% de descuento en todos los productos pagando con transferencia.
                 </p>
             </div>
         </header>

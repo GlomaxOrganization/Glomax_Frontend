@@ -6,7 +6,7 @@ export const useFetchPurchaseById = (id: string | undefined) => {
 
     const fetchPurchase = async () => {
         try {
-            const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/getPurchaseById?id=${id}", {
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL+`/getPurchaseById?id=${id}`, {
                 method: "GET",
                 credentials: "include",
             });

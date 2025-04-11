@@ -6,7 +6,7 @@ export const useFetchCategoryById = (id: string | undefined) => {
 
     const fetchCategory = async () => {
         try {
-            const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/getCategoryById?id=${id}", {
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL+`/getCategoryById?id=${id}`, {
                 method: "GET",
                 credentials: "include",
             });

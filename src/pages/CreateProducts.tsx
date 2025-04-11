@@ -36,7 +36,7 @@ export const CreateProducts = () => {
         };
 
         try {
-            const response = await fetch("https://glomaxbackend.up.railway.app/create-products", {
+            const response = await fetch("import.meta.env.VITE_MERCADO_PAGO_TOKEN/create-products", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

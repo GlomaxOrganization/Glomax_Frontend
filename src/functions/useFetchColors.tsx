@@ -6,7 +6,7 @@ export const useFetchColors = () => {
 
     const fetchColors = async () => {
         try {
-            const response = await fetch("https://glomaxbackend.up.railway.app/colors", {
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/colors", {
                 method: "GET",
                 credentials: "include",
             });

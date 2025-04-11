@@ -16,11 +16,16 @@ export const Header = (props :{userObtained: User | null }) => {
     const user = props.userObtained ?? fetchedUser;
 
     const login = () => {
-        window.location.href = "https://glomaxbackend.up.railway.app/oauth2/authorization/google";
+        window.location.href = import.meta.env.VITE_BACKEND_URL+"/oauth2/authorization/google";
     };
 
     const logout = () => {
-        window.location.href = "https://glomaxbackend.up.railway.app/logout";
+        fetch("import.meta.env.VITE_MERCADO_PAGO_TOKEN/logout", {
+            method: "GET",
+            credentials: "include"
+        }).then(() => {
+            window.location.href = "https://glomax.up.railway.app";
+        });
     };
 
     return (

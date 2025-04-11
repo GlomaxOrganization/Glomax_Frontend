@@ -6,7 +6,7 @@ export const useFetchPurchasesByUser = () => {
 
     const fetchPurchasesByUser = async () => {
         try {
-            const response = await fetch("https://glomaxbackend.up.railway.app/purchases-by-user", {
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/purchases-by-user", {
                 method: "GET",
                 credentials: "include",
             });

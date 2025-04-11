@@ -3,12 +3,12 @@ import {Filter, Purchase} from "../types/types";
 
 export const useFetchSales = (data: Filter, filtered: boolean) => {
     const [purchases, setPurchases] = useState<Purchase[]>([]);
-    const hasFetched = useRef(false); // Evita la doble ejecución
+    const hasFetched = useRef(false);
 
 
     const fetchPurchases = async () => {
         try {
-            const response = await fetch("https://glomaxbackend.up.railway.app/purchases", {
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/purchases", {
                 method: "POST",
                 body: JSON.stringify(data),
                 headers: {
@@ -26,7 +26,7 @@ export const useFetchSales = (data: Filter, filtered: boolean) => {
     useEffect(() => {
         fetchPurchases().then(r => {
             setPurchases(r as Purchase[]);
-            if (hasFetched.current) return; // 🔴 Evita doble ejecución
+            if (hasFetched.current) return;
             hasFetched.current = true;
         } )
     },[filtered]);

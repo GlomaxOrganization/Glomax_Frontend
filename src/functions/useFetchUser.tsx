@@ -6,7 +6,7 @@ export const useFetchUser = (shouldFetch : boolean) => {
 
     const fetchUser = async () => {
         try {
-            const response = await fetch("https://glomaxbackend.up.railway.app/user", {
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/user", {
                 method: "GET",
                 credentials: "include",
             });

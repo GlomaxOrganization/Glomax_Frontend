@@ -6,7 +6,7 @@ export const useFetchSeasons = () => {
 
     const fetchSeasons = async () => {
         try {
-            const response = await fetch("https://glomaxbackend.up.railway.app/seasons", {
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/seasons", {
                 method: "GET",
                 credentials: "include",
             });

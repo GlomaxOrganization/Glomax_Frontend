@@ -6,7 +6,7 @@ export const useFetchTypes = () => {
 
     const fetchType = async () => {
         try {
-            const response = await fetch("https://glomaxbackend.up.railway.app/types", {
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/types", {
                 method: "GET",
                 credentials: "include",
             });

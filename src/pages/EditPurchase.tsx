@@ -30,7 +30,7 @@ export const EditPurchase = () => {
     const editSale = async () => {
         try {
             const response = await axios.post(
-                "https://glomaxbackend.up.railway.app/edit-purchase",
+                import.meta.env.VITE_BACKEND_URL+"/edit-purchase",
                 {
                     statePurchase,
                     trackingCode,

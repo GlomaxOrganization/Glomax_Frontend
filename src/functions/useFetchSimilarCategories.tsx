@@ -6,7 +6,7 @@ export const useFetchSimilarCategories = (typeId: number | undefined, id : numbe
 
     const fetchSimilarCategories = async () => {
         try {
-            const response = await fetch(`https://glomaxbackend.up.railway.app/getSimilarCategories?typeId=${typeId}`, {
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/getSimilarCategories?typeId=${typeId}", {
                 method: "GET",
                 credentials: "include",
             });

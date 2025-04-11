@@ -45,7 +45,7 @@ export const Filters = (props: { setCategories: (categories: Category[]) => void
         }
 
         try {
-            const response = await fetch(`https://glomaxbackend.up.railway.app/categoriesFiltered`, {
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/categoriesFiltered", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

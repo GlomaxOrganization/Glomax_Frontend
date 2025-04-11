@@ -7,7 +7,7 @@ export const useFetchProduct = (categoryId: number | undefined, sizeId: number, 
     const fetchProduct = async () => {
         if(sizeId == 0) return;
         try {
-            const response = await fetch(`https://glomaxbackend.up.railway.app/getProduct`, {
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL+"/getProduct", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

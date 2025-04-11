@@ -8,12 +8,14 @@ export const Hero = () => {
                 initial={{ opacity: 0, y: -50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, ease: "easeOut" }}
+                viewport={{ once: true }}
             >
                 <motion.h1
                     className="text-4xl md:text-5xl font-bold"
                     initial={{ opacity: 0, x: -50 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 1, delay: 0.3 }}
+                    viewport={{ once: true }}
                 >
                     Glomax
                 </motion.h1>
@@ -23,6 +25,7 @@ export const Hero = () => {
                     initial={{ opacity: 0, x: -50 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 1, delay: 0.6 }}
+                    viewport={{ once: true }}
                 >
                     Expresate con cada outfit. Ropa única para personas auténticas. ¡Comprá ahora y marcá la diferencia!
                 </motion.p>
@@ -36,6 +39,7 @@ export const Hero = () => {
                         transition={{ duration: 1, delay: 0.9 }}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
+                        viewport={{ once: true }}
                     >
                         Comprar
                     </motion.a>
@@ -43,12 +47,13 @@ export const Hero = () => {
             </motion.div>
 
             <motion.img
-                alt="Image Hero"
+                alt="Imagen de portada"
                 src="https://i.imgur.com/Vokvf7e.png"
-                className="w-full max-w-[220px] md:max-w-[300px] lg:max-w-[400px] xl:max-w-[450px] mb-12 lg:mb-0 rounded-lg shadow-2xl"
+                className="w-full max-w-[250px] md:max-w-[300px] lg:max-w-[400px] xl:max-w-[450px] mb-12 lg:mb-0 rounded-lg shadow-2xl"
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1, delay: 0.6 }}
+                viewport={{ once: true }}
             />
         </div>
     );

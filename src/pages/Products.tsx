@@ -14,8 +14,8 @@ export const Products = () => {
     const initialCategories = useFetchCategories(index);
     useEffect(() => {
         setCategories(initialCategories);
-        setIsLoading(false)
-    }, [initialCategories]);
+        if (categories.length > 0) setIsLoading(false)
+    }, [categories.length, initialCategories]);
 
     const cardVariants = {
         hidden: { opacity: 0, y: 50 },

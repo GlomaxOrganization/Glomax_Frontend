@@ -44,7 +44,7 @@ export const Contact = () => {
                             <a href={'https://www.instagram.com/glomax_fashion/'} target={'_blank'}>
                                 <img src={'/instagram.svg'} alt={'Instagram'} className={'md:w-12 w-10 mx-auto'}/>
                             </a>
-                            <a href={'https://www.tiktok.com/@rayzal_carp'} target={'_blank'}><img src={'/tiktok.svg'}
+                            <a href={''} target={'_blank'}><img src={'/tiktok.svg'}
                                                                                                    alt={'TikTok'}
                                                                                                    className={'md:w-12 w-10 mx-auto'}/></a>
                         </div>
